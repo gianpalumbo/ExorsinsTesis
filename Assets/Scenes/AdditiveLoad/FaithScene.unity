@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 262.3616, g: 325.0784, b: 430.26373, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8185,6 +8185,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1906010087}
+        m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
+        m_MethodName: Pause
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 1906010087}
         m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
         m_MethodName: Pause
@@ -22223,8 +22235,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7507206409375685516}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -236.9, y: 25.86, z: -1.8230143}
+  m_LocalRotation: {x: -0.055358138, y: -0.7246362, z: -0.052850306, w: 0.6848685}
+  m_LocalPosition: {x: 88, y: 1, z: 0}
   m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -22244,7 +22256,7 @@ Transform:
   - {fileID: 6024145209275942943}
   - {fileID: 6832950600095256449}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -8.767, y: -93.267, z: 0.454}
 --- !u!4 &1080803721892500969
 Transform:
   m_ObjectHideFlags: 0
@@ -24892,10 +24904,10 @@ VisualEffect:
       m_Array: []
     m_Vector3f:
       m_Array:
-      - m_Value: {x: -0, y: 0, z: 0}
+      - m_Value: {x: 351.23276, y: 266.73294, z: 0.45439845}
         m_Name: Transform_angles
         m_Overridden: 1
-      - m_Value: {x: -236.9, y: 26.776806, z: -1.9730006}
+      - m_Value: {x: 88.28792, y: 1.8832029, z: 0.009153768}
         m_Name: Transform_position
         m_Overridden: 1
       - m_Value: {x: 1, y: 1, z: 1}
@@ -30591,10 +30603,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c254bec359b388a4b91c0e0792e0c468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingScene: 4
-  caveSpawn: {x: 0, y: 0, z: 0}
-  outsideSpawn: {x: 0, y: 0, z: 0}
-  castleSpawn: {x: 0, y: 0, z: 0}
+  startingScene: 1
+  caveSpawn: {x: 245, y: 34, z: -230}
+  outsideSpawn: {x: 260, y: 32, z: 19}
+  castleSpawn: {x: 88, y: 3, z: 0}
   textFade: {fileID: 470193608}
   speed: 10
   originalSpeed: 10
@@ -36781,10 +36793,10 @@ VisualEffect:
       m_Array: []
     m_Vector3f:
       m_Array:
-      - m_Value: {x: 0.89015675, y: 84.94212, z: 193.86682}
+      - m_Value: {x: 359.66257, y: 351.66788, z: 185.17389}
         m_Name: Transform_angles
         m_Overridden: 1
-      - m_Value: {x: -236.73712, y: 27.862974, z: -1.3326743}
+      - m_Value: {x: 87.81278, y: 3.0555222, z: 0.13652742}
         m_Name: Transform_position
         m_Overridden: 1
       - m_Value: {x: 5, y: 5, z: 5}
@@ -40887,7 +40899,7 @@ VisualEffect:
       - m_Value: {x: 0.5, y: 0.5, z: 0.5}
         m_Name: EnemyTransform_scale
         m_Overridden: 1
-      - m_Value: {x: -236.9, y: 25.86, z: -1.8230143}
+      - m_Value: {x: 88, y: 1, z: 0}
         m_Name: PivotPos
         m_Overridden: 1
     m_Vector4f:

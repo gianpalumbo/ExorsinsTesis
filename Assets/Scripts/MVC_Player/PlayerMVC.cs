@@ -83,18 +83,25 @@ public class PlayerMVC : MonoBehaviour
 
         myRB = GetComponent<Rigidbody>();
 
-        if (startingScene == StartingScene.Cave) _spawnPoint.position = caveSpawn;
-        else if (startingScene == StartingScene.Outside) _spawnPoint.position = outsideSpawn;
-        else if (startingScene == StartingScene.Castle) _spawnPoint.position = castleSpawn;
-
-        transform.position = _spawnPoint.position;
-
         AdditiveSceneManagerAgus.Initialize(this);
         if (!string.IsNullOrEmpty(GetSceneName(startingScene)))
-            AdditiveSceneManagerAgus.LoadSceneAdditiveByName(GetSceneName(startingScene));
+            LoadScene(startingScene);
 
         //ARRANCO FREEZEADO PARA NO CAERME Y ME DESFREEZEO DESPUES
         FreezeAllRB();
+    }
+
+    void LoadScene(StartingScene scene)
+    {
+        if (scene == StartingScene.Cave) _spawnPoint.position = caveSpawn;
+        else if (scene == StartingScene.Outside) _spawnPoint.position = outsideSpawn;
+        else if (scene == StartingScene.Castle) _spawnPoint.position = castleSpawn;
+
+        transform.position = _spawnPoint.position;
+
+        AdditiveSceneManagerAgus.LoadSceneAdditiveByName(GetSceneName(scene), GetSceneName(startingScene));
+
+        startingScene = scene;
     }
 
     public static string GetSceneName(StartingScene scene)
@@ -233,6 +240,21 @@ public class PlayerMVC : MonoBehaviour
             myRB.AddForce(-floorNormal, ForceMode.VelocityChange);
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha7) && !AdditiveSceneManagerAgus.isLoading)
+        {
+            AdditiveSceneManagerAgus.isLoading = true;
+            LoadScene(StartingScene.Cave);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha8) && !AdditiveSceneManagerAgus.isLoading)
+        {
+            AdditiveSceneManagerAgus.isLoading = true;
+            LoadScene(StartingScene.Outside);
+        }
+        else if (Input.GetKeyDown(KeyCode.Alpha9) && !AdditiveSceneManagerAgus.isLoading)
+        {
+            AdditiveSceneManagerAgus.isLoading = true;
+            LoadScene(StartingScene.Castle);
+        }
 
         //AGUS ADDON
         if (SoundManager.Instance != null)

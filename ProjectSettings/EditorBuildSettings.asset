@@ -4,5 +4,20 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/AdditiveLoad/Menu_1.unity
+    guid: a5d7bbe2d23e25d4ab4e028b941d22c5
+  - enabled: 1
+    path: Assets/Scenes/AdditiveLoad/FaithScene.unity
+    guid: cd7f9bc41d3f5644190a9855ba04327c
+  - enabled: 1
+    path: Assets/Scenes/AdditiveLoad/Cave_1.unity
+    guid: 8870229795e670445a4a1c20f560ded0
+  - enabled: 1
+    path: Assets/Scenes/AdditiveLoad/Outside_1.unity
+    guid: 34c0860992796f94b94e53ce523d7537
+  - enabled: 1
+    path: Assets/Scenes/Castle.unity
+    guid: b5e45c132d35bee4f9a3a389ea11f021
   m_configObjects: {}
