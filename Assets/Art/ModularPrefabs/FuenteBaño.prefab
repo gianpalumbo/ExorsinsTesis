@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8f6fd535518f5540b4bcc3099582f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  surfaceType: 2
+  surfaceType: 1
   geometryType: 1
   mesh: {fileID: 5858436417400918577, guid: e325ebb8a0f74c948aa1e55a91c9925b, type: 3}
   cpuSimulation: 1
@@ -159,9 +159,9 @@ MonoBehaviour:
   repetitionSize: 150
   largeWindSpeed: 0
   largeWindOrientationValue: 0
-  largeCurrentSpeedValue: 0
-  largeCurrentOrientationValue: 0
-  largeChaos: 0.8
+  largeCurrentSpeedValue: 3
+  largeCurrentOrientationValue: 180
+  largeChaos: 0
   largeBand0Multiplier: 1
   largeBand0FadeToggle: 1
   largeBand0FadeStart: 1500
@@ -175,7 +175,7 @@ MonoBehaviour:
   ripplesWindOrientationMode: 0
   ripplesWindOrientationValue: 0
   ripplesCurrentMode: 0
-  ripplesCurrentSpeedValue: 0
+  ripplesCurrentSpeedValue: 3.49
   ripplesCurrentOrientationValue: 0
   ripplesChaos: 1
   ripplesFadeToggle: 1
@@ -202,7 +202,7 @@ MonoBehaviour:
   causticsBand: 0
   virtualPlaneDistance: 4
   foam: 0
-  simulationFoamAmount: 0.3
+  simulationFoamAmount: 1
   simulationFoamDrag: 0
   simulationFoamSmoothness: 1
   foamMask: {fileID: 0}
@@ -251,7 +251,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   foamTexture: {fileID: 0}
-  foamTextureTiling: 0.2
+  foamTextureTiling: 124.85
   waterMask: {fileID: 0}
   waterMaskExtent: {x: 100, y: 100}
   waterMaskOffset: {x: 0, y: 0}

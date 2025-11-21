@@ -101,7 +101,7 @@ Material:
     - _EnableFogOnTransparent: 1
     - _Float: 7.5
     - _GlassMetallic: 1
-    - _GlassSmoothness: 0.95
+    - _GlassSmoothness: 0.975
     - _OpaqueCullMode: 2
     - _QueueControl: 0
     - _QueueOffset: 0
