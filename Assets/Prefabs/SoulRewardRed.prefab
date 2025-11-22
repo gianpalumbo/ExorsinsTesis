@@ -90,7 +90,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 1.02e-43, y: 5.6e-44, z: 5.7855e-41, w: -3.9094053e-25}
+  m_BoundingSphereOverride: {x: 1.02e-43, y: 6.2e-44, z: 2.245e-42, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
@@ -380,9 +380,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   baseSpeed: 1
-  speedMultiplier: 2
+  acceleration: 2
   soulsToAdd: 100
   offsetY: 0.25
+  maxSpeed: 25
 --- !u!135 &883890910988105998
 SphereCollider:
   m_ObjectHideFlags: 0

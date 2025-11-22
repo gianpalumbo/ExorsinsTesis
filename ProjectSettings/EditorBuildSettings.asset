@@ -20,4 +20,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Castle.unity
     guid: b5e45c132d35bee4f9a3a389ea11f021
+  - enabled: 1
+    path: Assets/Scenes/AdditiveLoad/TestFaith.unity
+    guid: f97a9709f35f3f04682a76f302b5b35f
+  - enabled: 1
+    path: Assets/Scenes/AdditiveLoad/Castle_Test_Boss.unity
+    guid: 47108d66314302b488ae13971611c8e4
   m_configObjects: {}

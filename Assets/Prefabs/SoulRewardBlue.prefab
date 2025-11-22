@@ -381,9 +381,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 0}
   baseSpeed: 2.5
-  speedMultiplier: 2
+  acceleration: 2
   soulsToAdd: 1000
   offsetY: 0.25
+  maxSpeed: 25
 --- !u!135 &883890910988105998
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -5458,7 +5459,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.9245283, g: 0.6844045, b: 0.44918123, a: 1}
+      maxColor: {r: 0, g: 0.105820894, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 0, b: 0, a: 0.9499339}
@@ -10153,7 +10154,7 @@ Light:
   m_BounceIntensity: 1
   m_ColorTemperature: 6570
   m_UseColorTemperature: 1
-  m_BoundingSphereOverride: {x: 0, y: 1e-45, z: 0, w: 0}
+  m_BoundingSphereOverride: {x: 1.02e-43, y: 2.1e-44, z: 4.6803e-41, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0

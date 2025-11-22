@@ -29,16 +29,9 @@ public class VorcarbisEFSM : MonoBehaviour , ISlowable
     private Renderer _myRen;
     private Animator _anim;
     PlayerLife player;
-    MeatLife meat;
-    //[SerializeField] TextMeshProUGUI[] texts;
-    //[SerializeField] TextMeshProUGUI debugState;
-
-
 
     //CHELO WAS HERE: AGREGO DEPENDENCIA DE SERVICE LOCATOR ISRESTING PARA APAGAR EL THINKING
     public bool isResting = false;
-
-
 
     #region PRECONDITIONS AND OBJECTIVES
     //PRECONDITIONS
@@ -143,8 +136,6 @@ public class VorcarbisEFSM : MonoBehaviour , ISlowable
         //CHELO WAS HERE: AGREGO DEPENDENCIA DE SERVICE LOCATOR ISRESTING PARA APAGAR EL THINKING
         isResting = true;
 
-
-
         bileShot = new bool[bileQuantity];
         bileTimes = new float[bileQuantity];
 
@@ -158,9 +149,6 @@ public class VorcarbisEFSM : MonoBehaviour , ISlowable
         // _enemyLife = GetComponent<EnemyLife>();
         if (_enemyLife == null) _enemyLife = GetComponent<BossLife>();
 
-
-
-
         _myRb = GetComponent<Rigidbody>();
         _myRen = GetComponent<Renderer>();
         _anim = GetComponent<Animator>();
@@ -172,7 +160,6 @@ public class VorcarbisEFSM : MonoBehaviour , ISlowable
         canGetHitstunned = true;
 
         phaseChanged = false;
-
 
         mat.SetFloat("_Rage", 0);
 
@@ -245,22 +232,11 @@ public class VorcarbisEFSM : MonoBehaviour , ISlowable
         thinking.OnEnter += x =>
         {
             _anim.SetBool("isIdle", true);
-
-
-
-
-
-
         };
         thinking.OnUpdate += () =>
         {
-
-
-
             //CHELO WAS HERE: AGREGO DEPENDENCIA DE SERVICE LOCATOR ISRESTING PARA APAGAR EL THINKING
             if (isResting == true) return;
-
-
 
             //DEBUG PARA VOMIT ATTK
             if (!canThink) 
@@ -523,7 +499,6 @@ public class VorcarbisEFSM : MonoBehaviour , ISlowable
         //VOMIT ATTK
         vomitAttk.OnEnter += x => //GENERIC VOMIT COUNTER CON 3 SEGUNDOS PARA VOLVER A VOMITAR
         {
-            _anim.applyRootMotion = true;
             _anim.SetTrigger("VomitAttack");
             _myRb.velocity = Vector3.zero;
             isVomiting = true;
@@ -542,6 +517,7 @@ public class VorcarbisEFSM : MonoBehaviour , ISlowable
                     {
                         ShootBile();
                         bileShot[i] = true;
+                        break; // <- SOLO UN DISPARO POR FRAME
                     }
                 }
             }

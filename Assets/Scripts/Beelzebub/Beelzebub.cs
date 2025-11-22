@@ -7,6 +7,9 @@ using JetBrains.Annotations;
 using TMPro;
 using UnityEngine.VFX;
 
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(BossLife))]
 public class Beelzebub : MonoBehaviour, ISlowable
 {
     public enum BInputs
@@ -61,8 +64,10 @@ public class Beelzebub : MonoBehaviour, ISlowable
     [SerializeField] int hitCounterToRest = 3;
     [SerializeField] float _counterSmokeShield = 30f, counterFollow = 4;
     [SerializeField] Transform mouthSpawner;
-    [SerializeField] GameObject maceHitbox, pushHitbox, smokeHitbox, mortarProyectile;
-    [SerializeField] GameObject karmicTrigger;
+    //[SerializeField] GameObject pushHitbox, smokeHitbox, mortarProyectile;
+    [SerializeField] GameObject tongueHitbox1, tongueHitbox2, tongueHitbox3, mortarProyectile;
+    Vector3 posSlam1 = new Vector3(-187.95f, 21.2f, 4.52f), posSlam2 = new Vector3(-207.27f, 21.2f, 1.48f), posSlam3 = new Vector3(-212.45f, 21.2f, 0.75f);
+    //[SerializeField] GameObject karmicTrigger;
     [SerializeField] GameObject groundSlam;
     [SerializeField] Vector3 offsetYForSight;
     [SerializeField] float _rotationSpeed = 5f;
@@ -83,7 +88,7 @@ public class Beelzebub : MonoBehaviour, ISlowable
     bool canTurnOnHitbox = false, canSlamGround = false;
     float _currentDmg;
     [SerializeField] Transform target;
-    public float dmgAttk1 = 22f;
+    public float dmgAttk1 = 22f, dmgAttk2 = 34f;
     bool phaseChanged, isSlowed;
     Vector3 _previousTargetPosition;
     #endregion
@@ -95,7 +100,7 @@ public class Beelzebub : MonoBehaviour, ISlowable
     #region BILE FRAMES AND FLAGS
     [Header("<color=orange>BILE VARIABLES (attks to vomit after follow 3 HARDCODED)</color>")]
     [SerializeField] int bileQuantity = 3;
-    [SerializeField] float angleOfBile = 45f;
+    [SerializeField] float angleOfBile = 45f, timeToShootBile = 1f;
     Vector2 bileRange = new Vector2(0.2f, 0.6f);
     bool isVomiting = false;
     bool[] bileShot;
@@ -299,28 +304,47 @@ public class Beelzebub : MonoBehaviour, ISlowable
         // TONGUE ATTACK (POR AHORA NORMAL PORQUE NO TENGO ANIMACIONES NI MODELO)
         tongueAttk.OnEnter += x =>
         {
-            _anim.applyRootMotion = true;
-
-            randomAttack = UnityEngine.Random.Range(1, 4); //SI VENGO DE FOLLOW RANDOM ATTACK ES 3 Y HAGO ATTACK DE SALTO
+            randomAttack = UnityEngine.Random.Range(1, 2);
             canGetHitstunned = false;
+
+            if (randomAttack == 1) _currentDmg = dmgAttk1;
+            else _currentDmg = dmgAttk2;
 
             _anim.SetTrigger("LightAttack" + randomAttack);
             _myRb.velocity = Vector3.zero;
         };
-        bool canTurnSpecialHitbox = false;
+
         tongueAttk.OnUpdate += () =>
         {
             var p = GetStateProgress($"LightAttack{randomAttack}");
 
             // Ventana solo si REALMENTE estás en LightAttack1
             if (randomAttack == 1)
-            { canTurnOnHitbox = p.inState && p.t01 >= 0.33f && p.t01 <= 0.66f; }
-            else if (randomAttack == 2)
-            { canTurnOnHitbox = p.inState && p.t01 >= 0.42f && p.t01 <= 0.46f; }
-            else // randomAttack == 3 (49 / 126 frames) IMPACT
             {
-                canTurnSpecialHitbox = p.inState && p.t01 >= 0.38f && p.t01 <= 0.75f;
-                canSlamGround = p.inState && p.t01 >= 0.38f && p.t01 <= 0.75f;
+                bool inWindow1 = p.t01 >= 0.16f && p.t01 <= 0.25f;
+                bool inWindow2 = p.t01 >= 0.66f && p.t01 <= 0.75f;
+
+                canSlamGround = inWindow1 || inWindow2;
+
+                bool canTurnOnHitbox1 = p.inState && inWindow1;
+                bool canTurnOnHitbox2 = p.inState && inWindow2;
+
+                if(inWindow1) groundSlam.transform.position = posSlam1;
+                else if (inWindow2) groundSlam.transform.position = posSlam2;
+
+                tongueHitbox1.SetActive(canTurnOnHitbox1);
+                tongueHitbox2.SetActive(canTurnOnHitbox2);
+            }
+            else
+            {
+                bool inWindow3 = p.t01 >= 0.56f && p.t01 <= 0.6f;
+
+                if (inWindow3) groundSlam.transform.position = posSlam3;
+                canSlamGround = inWindow3;
+
+                bool canTurnOnHitbox3 = p.inState && inWindow3;
+
+                tongueHitbox3.SetActive(canTurnOnHitbox3);
             }
 
             if (canSlamGround)
@@ -329,9 +353,6 @@ public class Beelzebub : MonoBehaviour, ISlowable
                 groundSlam.SetActive(true);
             }
 
-            maceHitbox.SetActive(canTurnOnHitbox);
-            pushHitbox.SetActive(canTurnSpecialHitbox);
-
             if (p.finished)
                 SendInputToFSM(BInputs.REST);
         };
@@ -339,8 +360,8 @@ public class Beelzebub : MonoBehaviour, ISlowable
         {
             groundSlam.SetActive(false);
             _anim.ResetTrigger("LightAttack" + randomAttack);
-            maceHitbox.SetActive(false); // por las dudas, cerrá la hitbox al salir
-            pushHitbox.SetActive(false);
+
+            //pushHitbox.SetActive(false);
         };
         // HITSTUN
         //hitstun.OnEnter += x =>
@@ -353,107 +374,151 @@ public class Beelzebub : MonoBehaviour, ISlowable
         //};
         //hitstun.OnExit += x =>
         //{
-            
+
         //};
         // DEATH RAY
         bool isLaserActive = false;
-        deathRay.OnEnter += x =>
-        {
-            _anim.applyRootMotion = false;
-            _anim.SetTrigger("VomitAttack");
-            _myRb.velocity = Vector3.zero;
-            isLaserActive = false;
-        };
+        float laserFollowT = 0f;
 
         float yAxis = -1f;
         float xAxis = 0f;
         float rayLength = 100f;
         float radius = 3f;
+
+        deathRay.OnEnter += x =>
+        {
+            _anim.applyRootMotion = false;
+            _anim.SetTrigger("DeathRay");
+            _myRb.velocity = Vector3.zero;
+
+            isLaserActive = false;
+            laserFollowT = 0f;
+
+            yAxis = -1f;
+            xAxis = 0f;
+            ResetCounter();
+        };
+
         deathRay.OnUpdate += () =>
         {
-            if (GenericCounter(2f))
+            LookAtParameterOnY(player.transform, _rotationSpeed / 2);
+
+            // PROGRESO DE LA ANIMACIÓN
+            var p = UtilitiesAgus.GetAnimatorStateProgress("DeathRay", _anim);
+
+            // SI LA ANIMACIÓN TERMINÓ, VOLVEMOS A PENSAR
+            if (p.finished)
             {
-                if (!isLaserActive)
-                {
-                    isLaserActive = true;
-                    ResetCounter();
-                    _vfxDeathRay.SendEvent("AcidLaser");
-                }
+                Think();
+                return;
             }
 
-            LookAtParameterOnY(target, rotationSpeed);
+            // *** ACTIVACIÓN EN 0.63 NORMALIZED TIME ***
+            if (p.t01 >= 0.65f && p.inState && !isLaserActive)
+            {
+                isLaserActive = true;
+                _vfxDeathRay.SendEvent("AcidLaser");
+            }
 
-            var u = UtilitiesAgus.GetAnimatorStateProgress("VomitAttack", _anim);
+            if (!isLaserActive)
+                return; // hasta 0.63f NO HACEMOS NADA
 
-            if (u.finished) Think(); // ARREGLAR, POR ALGUNA RAZÓN NO PASA DEVUELTA A THINKING
+            //--------------------------------------------------
+            // *** SEGUIMIENTO DEL PLAYER CON LERP ***
+            //--------------------------------------------------
 
-            if (u.t01 < 120f / 334f || !u.inState) return;
+            // La rotación debe ir suavizando hacia el target
+            laserFollowT += Time.deltaTime * 1.5f; // <- ajustá este valor para suavidad
+            Vector3 desiredDir = (player.transform.position - mouthSpawner.position).normalized;
+            Vector3 followDir = Vector3.Lerp(mouthSpawner.forward, desiredDir, laserFollowT).normalized;
 
-
+            // Hacemos que el rayo “suba”
             yAxis += Time.deltaTime * speedDeathRay;
             xAxis += Time.deltaTime * speedDeathRay;
 
-            // Dirección local del rayo
+            // dirección local de subida
             Vector3 localDir = new Vector3(0, yAxis, xAxis).normalized;
 
-            // Convertimos al espacio global (usa la orientación del mouthSpawner)
-            Vector3 worldDir = mouthSpawner.TransformDirection(localDir);
+            // combinación de:
+            // - dirección de seguimiento
+            // - dirección de subida
+            Vector3 worldDir = (mouthSpawner.TransformDirection(localDir) + followDir).normalized;
+
+            //--------------------------------------------------
+            // CÁLCULO DE rayo
+            //--------------------------------------------------
 
             Vector3 start = mouthSpawner.position;
             Vector3 end = start + worldDir * rayLength;
 
             Debug.DrawLine(start, end, Color.green);
 
+            // DAÑO EN CAPSULE
             Collider[] hits = Physics.OverlapCapsule(start, end, radius, playerLayer);
             foreach (var hit1 in hits)
             {
-                if (hit1.TryGetComponent<PlayerLife>(out PlayerLife player))
-                    player.TakeDamageWithoutFlinching(dpsRay);
+                if (hit1.TryGetComponent<PlayerLife>(out PlayerLife playerLife))
+                    playerLife.TakeDamageWithoutFlinching(dpsRay);
             }
 
-            Vector3 origin = acidLaser.position;
-            Vector3 direction = acidLaser.forward;
+            //--------------------------------------------------
+            // VFX
+            //--------------------------------------------------
 
             acidLaser.rotation = Quaternion.LookRotation(worldDir);
 
-            Ray ray = new Ray(origin, direction);
+            Ray ray = new Ray(acidLaser.position, acidLaser.forward);
             if (Physics.Raycast(ray, out RaycastHit hit, rayLength))
             {
-                float lenght = Vector3.Distance(hit.point, origin);
-                _vfxDeathRay.SetFloat("LaserLenght", lenght);
+                float length = Vector3.Distance(hit.point, acidLaser.position);
+                _vfxDeathRay.SetFloat("LaserLenght", length);
                 _vfxDeathRay.SetVector3("ImpactPoint", hit.point);
                 _vfxDeathRay.SetVector3("InpactNormal", hit.normal);
-
             }
             else
             {
                 _vfxDeathRay.SetFloat("LaserLenght", rayLength);
-                _vfxDeathRay.SetVector3("ImpactPoint", direction * rayLength);
-                _vfxDeathRay.SetVector3("InpactNormal", -direction);
+                _vfxDeathRay.SetVector3("ImpactPoint", acidLaser.forward * rayLength);
+                _vfxDeathRay.SetVector3("InpactNormal", -acidLaser.forward);
             }
         };
 
         deathRay.OnExit += x =>
         {
             isLaserActive = false;
+            laserFollowT = 0f;
+
             yAxis = -1f;
             xAxis = 0f;
             ResetCounter();
         };
 
+
         // MORTAR VOMIT
+        bool startedVomitPhase = false;
         mortarVomit.OnEnter += x =>
         {
             _anim.applyRootMotion = false;
-            _anim.SetTrigger("VomitAttack");
+            _anim.SetTrigger("VomitAttackEnter");
             _myRb.velocity = Vector3.zero;
             isVomiting = true;
         };
         mortarVomit.OnUpdate += () =>
         {
-            var p = GetStateProgress("VomitAttack");
+            var p = GetStateProgress("VomitAttackEnter");
 
             LookAtParameterOnY(player.transform, _rotationSpeed / 4);
+
+            // Espera inicial solo UNA vez
+            if (!startedVomitPhase)
+            {
+                if (GenericCounter(timeToShootBile))
+                {
+                    startedVomitPhase = true;
+                    ResetCounter();
+                }
+                else return;
+            }
 
             if (p.inState)
             {
@@ -463,20 +528,32 @@ public class Beelzebub : MonoBehaviour, ISlowable
                     {
                         ShootBile();
                         bileShot[i] = true;
+                        break; // << ESTA VEZ SÍ VA ACÁ Y FUNCIONA
                     }
                 }
             }
 
-            if (p.finished && p.inState)
+            // chequeo manual, super barato
+            for (int i = 0; i < bileShot.Length; i++)
             {
-                for (int i = 0; i < bileShot.Length; i++) bileShot[i] = false;
-                Think();
+                if (!bileShot[i])
+                    return;
             }
+
+            // Si llegó acá es porque TODOS se tiraron
+            for (int i = 0; i < bileShot.Length; i++)
+                bileShot[i] = false;
+
+            startedVomitPhase = false;
+            Think();
         };
+
         mortarVomit.OnExit += x =>
         {
+            startedVomitPhase = false;
             isVomiting = false;
-            _anim.ResetTrigger("VomitAttack");
+            _anim.ResetTrigger("VomitAttackEnter");
+            _anim.SetTrigger("VomitAttackExit");
             ResetVomitCounter();
         };
         // TAUNT
@@ -496,7 +573,6 @@ public class Beelzebub : MonoBehaviour, ISlowable
         death.OnEnter += x =>
         {
             _enemyLife.IsDead = true;
-            _anim.SetTrigger("Death");
             _anim.SetBool("isDead", true);
         };
         death.OnUpdate += () => 
