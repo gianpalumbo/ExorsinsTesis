@@ -232,7 +232,7 @@ MonoBehaviour:
   endSmoothness: 0.85
   smoothnessFadeStart: 100
   smoothnessFadeDistance: 500
-  refractionColor: {r: 0.19999997, g: 0.52874285, b: 0.54901963, a: 1}
+  refractionColor: {r: 0.54901963, g: 0.23398563, b: 0.19999997, a: 1}
   maxRefractionDistance: 0.35
   absorptionDistance: 3.8
   scatteringColor: {r: 0, g: 0.33317557, b: 0.6, a: 1}
