@@ -219,7 +219,7 @@ LODGroup:
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 3256456218456611119}
-  - screenRelativeHeight: 0.043857656
+  - screenRelativeHeight: 0.023523418
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 2509241505046007207}
@@ -239,6 +239,8 @@ GameObject:
   - component: {fileID: 5963373804011524573}
   - component: {fileID: 3593458072371591602}
   - component: {fileID: 3256456218456611119}
+  - component: {fileID: 4910738764761442991}
+  - component: {fileID: 7915480393578108785}
   m_Layer: 0
   m_Name: EsquinaParedLOD0
   m_TagString: Untagged
@@ -311,3 +313,45 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4910738764761442991
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7142151783954394644}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.2979298, y: 8, z: 5.675002}
+  m_Center: {x: 5.02604, y: 4, z: 1.6625013}
+--- !u!65 &7915480393578108785
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7142151783954394644}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5.675005, y: 8, z: 1.321034}
+  m_Center: {x: 2.8375025, y: 4, z: -0.51448274}

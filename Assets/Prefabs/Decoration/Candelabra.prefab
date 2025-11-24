@@ -51,7 +51,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 1
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -934,8 +934,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 148.88347, y: 497.1346, z: 148.8501}
-  m_Center: {x: -0.0000076293945, y: 0, z: -0.0000076293945}
+  m_Size: {x: 38.891636, y: 497.13458, z: 38.098934}
+  m_Center: {x: 1.3960364, y: 0, z: 2.0312238}
 --- !u!205 &2065387833934645996
 LODGroup:
   m_ObjectHideFlags: 0

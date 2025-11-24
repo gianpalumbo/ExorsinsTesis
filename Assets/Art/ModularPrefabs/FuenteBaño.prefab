@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 3190765315998991426}
   - component: {fileID: 7532306537954782564}
   - component: {fileID: 6820744227162356596}
+  - component: {fileID: 506005999707750954}
+  - component: {fileID: 7415890356662239087}
   m_Layer: 0
   m_Name: "FuenteBa\xF1o"
   m_TagString: Untagged
@@ -104,6 +106,50 @@ LODGroup:
     renderers:
     - renderer: {fileID: 7532306537954782564}
   m_Enabled: 1
+--- !u!65 &506005999707750954
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610796837963552851}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7.1930265, y: 8.488012, z: 3.5109642}
+  m_Center: {x: 0, y: 0, z: 1.1314222}
+--- !u!136 &7415890356662239087
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610796837963552851}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.552778
+  m_Height: 8.488012
+  m_Direction: 1
+  m_Center: {x: 0, y: -2.41, z: -0.41}
 --- !u!1 &4920623502441131167
 GameObject:
   m_ObjectHideFlags: 0

@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 299357658994430512}
   - component: {fileID: 3954186405790611325}
   - component: {fileID: 4903759166644439576}
+  - component: {fileID: 8151662430360798465}
+  - component: {fileID: 8908766608927482611}
   m_Layer: 0
   m_Name: ParedPuertaLOD0
   m_TagString: Untagged
@@ -83,6 +85,48 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8151662430360798465
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3206277430104835883}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5.7033453, y: 16, z: 0.175}
+  m_Center: {x: -2.8516726, y: 8, z: 0.0875}
+--- !u!65 &8908766608927482611
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3206277430104835883}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 5.7033453, y: 16, z: 0.175}
+  m_Center: {x: -17.16, y: 8, z: 0.0875}
 --- !u!1 &4622663415226713142
 GameObject:
   m_ObjectHideFlags: 0

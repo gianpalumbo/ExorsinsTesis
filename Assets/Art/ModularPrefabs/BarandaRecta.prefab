@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7870859776848875166}
   - component: {fileID: 1509872145794933369}
   - component: {fileID: 5263815329765719774}
+  - component: {fileID: 6677093646262372843}
   m_Layer: 0
   m_Name: BarandaRecta
   m_TagString: Untagged
@@ -83,3 +84,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6677093646262372843
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6713001300577619960}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 1.7000116, z: 1.3}
+  m_Center: {x: -1, y: 0.8500058, z: -0.5}
