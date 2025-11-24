@@ -8199,7 +8199,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1906010087}
         m_TargetAssemblyTypeName: PauseManager, Assembly-CSharp
-        m_MethodName: Pause
+        m_MethodName: ChangePaused
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -30603,7 +30603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c254bec359b388a4b91c0e0792e0c468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingScene: 2
+  startingScene: 4
   caveSpawn: {x: 245, y: 34, z: -230}
   outsideSpawn: {x: 260, y: 32, z: 19}
   castleSpawn: {x: 88, y: 3, z: 0}

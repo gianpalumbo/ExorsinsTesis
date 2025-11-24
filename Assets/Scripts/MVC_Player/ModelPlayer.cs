@@ -125,6 +125,9 @@ public class ModelPlayer
     #region New New Movement
     public void CalculateMovement()
     {
+        if (ServiceLocator.Instance.GetDependency<ControllerPlayer>().isAttacking)
+            return;
+
         var h = Input.GetAxisRaw("Horizontal");
         var v = Input.GetAxisRaw("Vertical");
 
@@ -170,6 +173,9 @@ public class ModelPlayer
 
     public void NewRun(float hor, float ver)
     {
+        if (ServiceLocator.Instance.GetDependency<ControllerPlayer>().isAttacking)
+            return;
+
         var velY = _rigidbody.velocity.y;
 
         if (inputDir.sqrMagnitude > 0.01f)

@@ -299,7 +299,7 @@ Material:
     - _TransparentWritingMotionVec: 0
     - _TransparentZWrite: 0
     - _UseShadowThreshold: 0
-    - _WaterAmount: 0.45
+    - _WaterAmount: 0.203
     - _WaterNormalIntensity: 0
     - _WaterSmooth: 0.6
     - _WaterSmoth: 0.7

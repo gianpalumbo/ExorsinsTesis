@@ -16752,7 +16752,7 @@ PrefabInstance:
     - target: {fileID: 1382032260812229241, guid: b509ad66a10ee5d4f81accf8ba2f2bdf,
         type: 3}
       propertyPath: maxLife
-      value: 10
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1382032260812229241, guid: b509ad66a10ee5d4f81accf8ba2f2bdf,
         type: 3}
@@ -17377,7 +17377,7 @@ PrefabInstance:
     - target: {fileID: 7711764303478475455, guid: b509ad66a10ee5d4f81accf8ba2f2bdf,
         type: 3}
       propertyPath: _speed
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 7711764303478475455, guid: b509ad66a10ee5d4f81accf8ba2f2bdf,
         type: 3}
@@ -35828,8 +35828,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 16777215
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

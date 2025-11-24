@@ -154,6 +154,7 @@ public class AttackEFSM : MonoBehaviour
         light1.OnEnter += x =>
         {
             _controller.isAttacking = true;
+            Debug.Log(_controller.isAttacking);
             _anim.SetTrigger("hit1");
             currentDmg = attack1.dmg;
 
@@ -234,7 +235,7 @@ public class AttackEFSM : MonoBehaviour
             hasPlayedTrail = false;
             //_sword.enabled = false;
             _anim.speed = 1;
-            _controller.isAttacking = false;
+            //_controller.isAttacking = false;
             _anim.ResetTrigger("hit1");
         };
         //LIGHT2
@@ -323,7 +324,7 @@ public class AttackEFSM : MonoBehaviour
             hasPlayedTrail = false;
             //_sword.enabled = false;
             _anim.speed = 1;
-            _controller.isAttacking = false;
+            //_controller.isAttacking = false;
             _anim.ResetTrigger("hit2");
         };
         //LIGHT2
@@ -408,7 +409,7 @@ public class AttackEFSM : MonoBehaviour
             hasPlayedTrail = false;
             //_sword.enabled = false;
             _anim.speed = 1;
-            _controller.isAttacking = false;
+            //_controller.isAttacking = false;
             _anim.ResetTrigger("hit3");
         };
         //HEAVY1

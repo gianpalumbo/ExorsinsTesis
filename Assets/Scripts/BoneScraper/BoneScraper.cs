@@ -329,10 +329,10 @@ public class BoneScraper : MonoBehaviour , ISlowable
             ResetCounter();
         };
         #endregion
-        #region FEAST (PENDIENTE DE ARREGLO)
+        #region FEAST
         feast.OnEnter += x =>
         {
-            _enemyLife.isInvulnerable = true;
+            //_enemyLife.isInvulnerable = true;
             AnimationFinishedFalse();
             _anim.SetBool("FeastBool", true);
             _currentDmg = _dmgFeast;
