@@ -30,6 +30,14 @@ public class Beelzebub : MonoBehaviour, ISlowable
     private Rigidbody _myRb;
     private Renderer _myRen;
     private Animator _anim;
+    public bool _animationFinished = false, canGetHitstunned = true, _haveIDied = false, comingFromFollow = false;
+    float _counter = 0, counterFollow = 3f;
+    int _restCounter = 0;
+    int randomAttack;
+    bool canTurnOnHitbox = false, canSlamGround = false;
+    float _currentDmg;
+    bool phaseChanged, isSlowed;
+    Vector3 _previousTargetPosition;
     [SerializeField] PlayerLife player;
 
 
@@ -38,22 +46,14 @@ public class Beelzebub : MonoBehaviour, ISlowable
     //CHELO WAS HERE: AGREGO DEPENDENCIA DE SERVICE LOCATOR ISRESTING PARA APAGAR EL THINKING
     public bool isResting = false;
     public TextMeshProUGUI currentStateTMP;
-    //PRECONDITIONS
-    public bool _isPlayerOnSight; //if player not on sight look at last place and taunt
-    public bool _canTaunt;
-    public bool _isPlayerOnAttkRange;//change attackrange tongue is huge
-    public bool _hasStamina;// depends of stamina (maybe i just use a float)
-    public bool _amIDead;// if im dead
-    public bool _amIStunned;// just in case
-    public bool _amIHurt;// instead of phases i go faster and stronger
-    public bool _canMortarVomit;//can mortar if stamina and cant reach player
-    public bool _canDeathRay;//can deathRay if player running in a straight line
-    public bool _haveToRest = false;// if (qty of skills) reached recharges stamina
-    public bool _isPlayerHurt; // if player low on life, press him more close
+    /*PRECONDITIONS:
+    isPlayerInSight
+    isPlayerInAttackRange
+     */
+    bool isPlayerInSight, isPlayerInAttackRange, _amIDead;
 
     //OBJECTIVES
     bool _isPlayerDead;
-    bool[] allPreconditions;
     #endregion
 
     #region VARIABLES
@@ -61,46 +61,31 @@ public class Beelzebub : MonoBehaviour, ISlowable
     [SerializeField] bool canThink = true;
     [Header("<color=orange>VARIABLES</color>")]
     [SerializeField] float _counterToRest = 5f;
-    [SerializeField] int hitCounterToRest = 3;
-    [SerializeField] float _counterSmokeShield = 30f, counterFollow = 4;
-    [SerializeField] Transform mouthSpawner;
+    [SerializeField] Transform mouthSpawner, target, tonguePos;
     //[SerializeField] GameObject pushHitbox, smokeHitbox, mortarProyectile;
-    [SerializeField] GameObject tongueHitbox1, tongueHitbox2, tongueHitbox3, mortarProyectile;
-    Vector3 posSlam1 = new Vector3(-187.95f, 21.2f, 4.52f), posSlam2 = new Vector3(-207.27f, 21.2f, 1.48f), posSlam3 = new Vector3(-212.45f, 21.2f, 0.75f);
-    //[SerializeField] GameObject karmicTrigger;
-    [SerializeField] GameObject groundSlam;
+    [SerializeField] GameObject groundSlam, tongueHitbox1, tongueHitbox2, tongueHitbox3, mortarProyectile;
+    Vector3 
+        posSlam1 = new Vector3(-187.95f, 21.2f, 4.52f), 
+        posSlam2 = new Vector3(-207.27f, 21.2f, 1.48f), 
+        posSlam3 = new Vector3(-212.45f, 21.2f, 0.75f);
+    [SerializeField] VisualEffect smokeShieldVfx, rageVfx;
+    [SerializeField] Material mat;
     [SerializeField] Vector3 offsetYForSight;
-    [SerializeField] float _rotationSpeed = 5f;
-    [SerializeField] float _speed = 5;
-    [SerializeField] float dstToAttk = 2f;
-    [SerializeField] float followRadius = 8f;
-    [SerializeField] float viewDistance = 15f;
-    [SerializeField] float angleOfView = 45f;
+    [SerializeField] float _rotationSpeed = 5f, _speed = 5, dstToAttk = 2f, followRadius = 8f, viewDistance = 15f, angleOfView = 45f,
+                             dmgAttk1 = 22f, dmgAttk2 = 34f;
     [SerializeField] LayerMask obstacles = 1 << 13, playerLayer; //Activo la layer 13 que va a ser obstacles
     [Header("<color=orange>PURSUIT VARIABLES</color>")]
     [SerializeField] float _timePrediction = 0.3f;
-    [SerializeField] VisualEffect smokeShieldVfx, rageVfx;
-    [SerializeField] Material mat;
-    public bool _animationFinished = false, canGetHitstunned = true, _haveIDied = false, comingFromFollow = false;
-    float _counter = 0, _smokeCounter = 0, _vomitCounter = 3; //LE PONGO EN TRES PARA QUE AL PRINCIPIO YA TE ATAQUE Y NO SE QUEDE SIN ESTADO
-    int _restCounter = 0;
-    int randomAttack;
-    bool canTurnOnHitbox = false, canSlamGround = false;
-    float _currentDmg;
-    [SerializeField] Transform target;
-    public float dmgAttk1 = 22f, dmgAttk2 = 34f;
-    bool phaseChanged, isSlowed;
-    Vector3 _previousTargetPosition;
     #endregion
 
     #region STAMINA
-    float bossStamina = 100f;
+    float bossStamina = 100f, currentStamina, staminaMutliplier = 2f;
     #endregion
 
     #region BILE FRAMES AND FLAGS
     [Header("<color=orange>BILE VARIABLES (attks to vomit after follow 3 HARDCODED)</color>")]
     [SerializeField] int bileQuantity = 3;
-    [SerializeField] float angleOfBile = 45f, timeToShootBile = 1f;
+    [SerializeField] float angleOfBile = 45f, timeToShootBile = 1f, costOfMortarVomit = 25f;
     Vector2 bileRange = new Vector2(0.2f, 0.6f);
     bool isVomiting = false;
     bool[] bileShot;
@@ -110,16 +95,16 @@ public class Beelzebub : MonoBehaviour, ISlowable
 
     #region DEATHRAY
     [Header("<color=orange>DEATHRAY</color>")]
-    [SerializeField] float speedDeathRay = .5f, dpsRay = .25f, rotationSpeed = 1f;
+    [SerializeField] float speedDeathRay = .5f, dpsRay = .25f, rotationSpeed = 1f, costOfDeathRay = 50f;
     [SerializeField] VisualEffect _vfxDeathRay;
     [SerializeField] Transform acidLaser;
     #endregion
 
-    #region HITSTUN HANDLER
-    [Header("<color=orange>HITSTUN VARIABLES</color>")]
-    [SerializeField] int hitsToStun = 3;
-    int _hitCounter = 0;
-    #endregion
+    //#region HITSTUN HANDLER
+    //[Header("<color=orange>HITSTUN VARIABLES</color>")]
+    //[SerializeField] int hitsToStun = 3;
+    //int _hitCounter = 0;
+    //#endregion
 
 
     //CHELO WAS HERE: AGREGO DEPENDENCIA DE SERVICE LOCATOR ISRESTING PARA APAGAR EL THINKING
@@ -151,7 +136,6 @@ public class Beelzebub : MonoBehaviour, ISlowable
         _myRb = GetComponent<Rigidbody>();
         _myRen = GetComponent<Renderer>();
         _anim = GetComponent<Animator>();
-        _smokeCounter = _counterSmokeShield; //IGUALO SMOKECOUNTER PARA QUE HAGA DE UNA APENAS QUEDA POR DEBAJO DEL 50%
 
         smokeShieldVfx.SendEvent("Stop");
 
@@ -159,6 +143,7 @@ public class Beelzebub : MonoBehaviour, ISlowable
 
         phaseChanged = false;
 
+        currentStamina = bossStamina;
         //mat.SetFloat("_Rage", 0);
 
         #region STATES DECLARATION
@@ -191,6 +176,8 @@ public class Beelzebub : MonoBehaviour, ISlowable
             .SetTransition(BInputs.THINKING, thinking)
             .SetTransition(BInputs.HITSTUN, hitstun)
             .SetTransition(BInputs.DEATH, death)
+            .SetTransition(BInputs.DEATHRAY, deathRay)
+            .SetTransition(BInputs.MORTARVOMIT, mortarVomit)
             .Done();
         StateConfigurer.Create(hitstun)
             .SetTransition(BInputs.THINKING, thinking)
@@ -240,9 +227,11 @@ public class Beelzebub : MonoBehaviour, ISlowable
         thinking.OnUpdate += () =>
         {
             //CHELO WAS HERE: AGREGO DEPENDENCIA DE SERVICE LOCATOR ISRESTING PARA APAGAR EL THINKING
-            if (isResting == true) return;
+            if (isResting) return;
 
-            //DEBUG PARA VOMIT ATTK
+            if (_isPlayerDead) return;
+
+            #region DEBUG MODE (DESACTIVAR CANTHINK)
             if (!canThink)
             {
                 if(Input.GetKeyDown(KeyCode.F))
@@ -254,20 +243,34 @@ public class Beelzebub : MonoBehaviour, ISlowable
                 if (Input.GetKeyDown(KeyCode.K))
                     SendInputToFSM(BInputs.DEATHRAY);
             }
+            #endregion
+            else
+            {
+                if (isPlayerInSight) SendInputToFSM(BInputs.FOLLOW);
+
+                if (isPlayerInAttackRange) SendInputToFSM(BInputs.TONGUEATTK);
+            }
         };
         thinking.OnExit += x =>
         {
             _anim.SetBool("isIdle", false);
             ResetCounter();
         };
+        int randomSkill = 0;
         rest.OnEnter += x =>
         {
             _anim.SetBool("isIdle", true);
             _myRb.velocity = Vector3.zero;
+            randomSkill = UnityEngine.Random.Range(1, 4);
         };
         rest.OnUpdate += () =>
         {
-            if (GenericCounter(_counterToRest)) Think();
+            if (GenericCounter(_counterToRest))
+            {
+                if (randomSkill == 1) SendInputToFSM(BInputs.DEATHRAY);
+                else if (randomSkill == 2) SendInputToFSM(BInputs.MORTARVOMIT);
+                else Think();
+            }
         };
         rest.OnExit += x =>
         {
@@ -302,18 +305,26 @@ public class Beelzebub : MonoBehaviour, ISlowable
             _anim.SetBool("isWalking", false);
         };
         // TONGUE ATTACK (POR AHORA NORMAL PORQUE NO TENGO ANIMACIONES NI MODELO)
+        bool flag1 = false;
+        bool flag2 = false;
+        bool flag3 = false;
         tongueAttk.OnEnter += x =>
         {
-            randomAttack = UnityEngine.Random.Range(1, 2);
+            flag1 = false;
+            flag2 = false;
+            flag3 = false;
+
+            randomAttack = UnityEngine.Random.Range(1, 3);
             canGetHitstunned = false;
 
             if (randomAttack == 1) _currentDmg = dmgAttk1;
             else _currentDmg = dmgAttk2;
 
+            Debug.Log(randomAttack);
+
             _anim.SetTrigger("LightAttack" + randomAttack);
             _myRb.velocity = Vector3.zero;
         };
-
         tongueAttk.OnUpdate += () =>
         {
             var p = GetStateProgress($"LightAttack{randomAttack}");
@@ -329,9 +340,16 @@ public class Beelzebub : MonoBehaviour, ISlowable
                 bool canTurnOnHitbox1 = p.inState && inWindow1;
                 bool canTurnOnHitbox2 = p.inState && inWindow2;
 
-                if(inWindow1) groundSlam.transform.position = posSlam1;
-                else if (inWindow2) groundSlam.transform.position = posSlam2;
-
+                if (inWindow1 && !flag1)
+                {
+                    flag1 = true;
+                    groundSlam.transform.position = new Vector3(tonguePos.position.x, groundSlam.transform.position.y, tonguePos.position.z);
+                }
+                else if (inWindow2 && !flag2) 
+                {
+                    flag2 = true;
+                    groundSlam.transform.position = new Vector3(tonguePos.position.x, groundSlam.transform.position.y, tonguePos.position.z);
+                }
                 tongueHitbox1.SetActive(canTurnOnHitbox1);
                 tongueHitbox2.SetActive(canTurnOnHitbox2);
             }
@@ -339,7 +357,11 @@ public class Beelzebub : MonoBehaviour, ISlowable
             {
                 bool inWindow3 = p.t01 >= 0.56f && p.t01 <= 0.6f;
 
-                if (inWindow3) groundSlam.transform.position = posSlam3;
+                if (inWindow3 && !flag3)
+                {
+                    flag3 = true;
+                    groundSlam.transform.position = new Vector3(tonguePos.position.x, groundSlam.transform.position.y, tonguePos.position.z);
+                }
                 canSlamGround = inWindow3;
 
                 bool canTurnOnHitbox3 = p.inState && inWindow3;
@@ -363,19 +385,24 @@ public class Beelzebub : MonoBehaviour, ISlowable
 
             //pushHitbox.SetActive(false);
         };
+
+        #region HITSTUN NO USADO POR AHORA
         // HITSTUN
         //hitstun.OnEnter += x =>
         //{
-
+        //
         //};
         //hitstun.OnUpdate += () =>
         //{
-
+        //
         //};
         //hitstun.OnExit += x =>
         //{
-
+        //
         //};
+        #endregion
+
+        #region DEATH RAY
         // DEATH RAY
         bool isLaserActive = false;
         float laserFollowT = 0f;
@@ -383,10 +410,12 @@ public class Beelzebub : MonoBehaviour, ISlowable
         float yAxis = -1f;
         float xAxis = 0f;
         float rayLength = 100f;
-        float radius = 3f;
+        float radius = 1.5f;
 
         deathRay.OnEnter += x =>
         {
+            currentStamina -= costOfDeathRay;
+
             _anim.applyRootMotion = false;
             _anim.SetTrigger("DeathRay");
             _myRb.velocity = Vector3.zero;
@@ -428,7 +457,7 @@ public class Beelzebub : MonoBehaviour, ISlowable
             //--------------------------------------------------
 
             // La rotación debe ir suavizando hacia el target
-            laserFollowT += Time.deltaTime * 1.5f; // <- ajustá este valor para suavidad
+            laserFollowT += Time.deltaTime * .25f; // <- ajustá este valor para suavidad
             Vector3 desiredDir = (player.transform.position - mouthSpawner.position).normalized;
             Vector3 followDir = Vector3.Lerp(mouthSpawner.forward, desiredDir, laserFollowT).normalized;
 
@@ -492,12 +521,14 @@ public class Beelzebub : MonoBehaviour, ISlowable
             xAxis = 0f;
             ResetCounter();
         };
-
+        #endregion
 
         // MORTAR VOMIT
         bool startedVomitPhase = false;
         mortarVomit.OnEnter += x =>
         {
+            currentStamina -= costOfMortarVomit;
+
             _anim.applyRootMotion = false;
             _anim.SetTrigger("VomitAttackEnter");
             _myRb.velocity = Vector3.zero;
@@ -547,14 +578,12 @@ public class Beelzebub : MonoBehaviour, ISlowable
             startedVomitPhase = false;
             Think();
         };
-
         mortarVomit.OnExit += x =>
         {
             startedVomitPhase = false;
             isVomiting = false;
             _anim.ResetTrigger("VomitAttackEnter");
             _anim.SetTrigger("VomitAttackExit");
-            ResetVomitCounter();
         };
         // TAUNT
         taunt.OnEnter += x => //GENERIC VOMIT COUNTER CON 3 SEGUNDOS PARA VOLVER A VOMITAR
@@ -573,7 +602,9 @@ public class Beelzebub : MonoBehaviour, ISlowable
         death.OnEnter += x =>
         {
             _enemyLife.IsDead = true;
+            _anim.SetTrigger("Death");
             _anim.SetBool("isDead", true);
+            gameObject.layer = 9;
         };
         death.OnUpdate += () => 
         {
@@ -581,6 +612,7 @@ public class Beelzebub : MonoBehaviour, ISlowable
         };
         death.OnExit += x =>
         {
+            gameObject.layer = 0;
             _anim.SetBool("isDead", false);
         };
         // CINEMATIC DEATH
@@ -605,26 +637,15 @@ public class Beelzebub : MonoBehaviour, ISlowable
     {
         if (player == null) return;
 
-        //_isPlayerOnSight = CheckFOV().isOnSight && CheckFOV().isPlayer;
-        _isPlayerOnSight = CheckPlayerInRadius(followRadius) && !ObstacleCovering(player.transform); //EL PLAYER ESTA EN RADIO, NO LO CUBRE NADA, LO MIRO Y LO SIGO
-        _isPlayerOnAttkRange = _isPlayerOnSight && CheckFOV().distance <= dstToAttk; //SOLO SI LO ESTOY MIRANDO ES TRUE QUE PUEDA MORDERLO
-        _amIStunned = _enemyLife.Life <= 0f;
-        _amIHurt = (_enemyLife.Life / _enemyLife.MaxLife) <= 0.5f; //SI BAJA DEL 50% DE VIDA, ESTOY HERIDO ENTRO EN FASE 2 DONDE PUEDO SMOKEAR
-        
-        float dist = Vector3.Distance(transform.position, player.transform.position);
-      
-        //OBJECTIVE
+        isPlayerInSight = CheckPlayerInRadius(viewDistance);
+        isPlayerInAttackRange = CheckFOV().distance <= dstToAttk;
+        _amIDead = _enemyLife.IsDead;
         _isPlayerDead = player.isDead;
-
-        if (_amIStunned && !_haveIDied)    //SI ESTOY STUNNEADO, MUERO (POR AHORA)
-        {
-            _haveIDied = true;
-            SendInputToFSM(BInputs.DEATH);
-        }
     }
     #endregion
 
     #region VARIOUS METHODS
+    public float GetCurrentDmg() => _currentDmg;
     void ShootBile()
     {
         var bilis = Instantiate(mortarProyectile, mouthSpawner.position, transform.rotation);
@@ -650,18 +671,6 @@ public class Beelzebub : MonoBehaviour, ISlowable
         //Debug.Log($"{inState} finished and is in state: {finishedAndInState} with normalized time {t01}");
         //Debug.Log($"{inState} {t01} {finished}");
         return (inState, t01, finishedAndInState);
-    }
-    public void GrabAttempt()
-    {
-        if (Vector3.Distance(player.transform.position, transform.position) <= dstToAttk)
-        {
-            SetRestingTrue(); // lo agarraste
-        }
-        else
-        {
-            _anim.SetBool("FeastBool", false);
-            Think();
-        }
     }
     void DeactivateThisGameObject() => gameObject.SetActive(false);
     void SetRestingTrue() => ServiceLocator.Instance.GetDependency<PlayerMVC>().SetResting(true);
@@ -735,7 +744,6 @@ public class Beelzebub : MonoBehaviour, ISlowable
     }
     public void Think()
     {
-        Debug.Log("PIENSO");
         SendInputToFSM(BInputs.THINKING);
     }
     bool GenericCounter(float time)
@@ -744,26 +752,6 @@ public class Beelzebub : MonoBehaviour, ISlowable
         return _counter >= time;
     }
     void ResetCounter() { _counter = 0; }
-    bool VomitCounter(float time)
-    {
-        _vomitCounter += Time.deltaTime;
-        return _vomitCounter >= time;
-    }
-    void ResetVomitCounter() { _vomitCounter = 0; }
-    bool SmokeShieldCounter(float time)
-    {
-        _smokeCounter += Time.deltaTime;
-        return _smokeCounter >= time;
-    }
-    void ResetSmokeShieldCounter() => _smokeCounter = 0;
-    Vector3 GetRandomPointWithinARadius(float radius)
-    {
-        float angle = UnityEngine.Random.Range(0f, Mathf.PI * 2f);
-        float xAxis = Mathf.Cos(angle) * radius;
-        float zAxis = Mathf.Sin(angle) * radius;
-
-        return transform.position + new Vector3(xAxis, 0, zAxis);
-    }
     #endregion
 
     #region MONOBEHAVIOURS, CONDITION CHECKER AND DEBUGS
@@ -776,68 +764,37 @@ public class Beelzebub : MonoBehaviour, ISlowable
         //_cameraShake.SetFloat("_Shaking", 0);
     }
 
-    (bool isOnSight, bool isPlayer, float distance) CheckFOV()
+    #region CheckFOV
+    (bool isOnSight, float distance) CheckFOV()
     {
-        bool sawPlayer = false;
-        float bestPlayerDist = Mathf.Infinity;
-        Transform bestPlayer = null;
+        Collider[] hits = Physics.OverlapSphere(transform.position, viewDistance);
+        if (hits == null || hits.Length == 0)
+            return (false, Mathf.Infinity);
 
-        float bestFoodDist = Mathf.Infinity;
-        Transform bestFood = null;
-
-        Collider[] colliders = Physics.OverlapSphere(transform.position, viewDistance);
-        if (colliders == null || colliders.Length == 0)
-            return (false, false, Mathf.Infinity);
-
-        foreach (var c in colliders)
+        foreach (var h in hits)
         {
-            Vector3 dir = c.transform.position - transform.position;
-            float angle = Vector3.Angle(transform.forward, dir.normalized);
-            if (angle > angleOfView * 0.5f) continue;
-
-            if (ObstacleCovering(c.transform)) continue;
-
-            float d = dir.magnitude;
-
-            if (c.GetComponent<PlayerLife>() != null)
+            // ¿Es el player?
+            if (h.TryGetComponent<PlayerLife>(out _))
             {
-                sawPlayer = true;
-                if (d < bestPlayerDist)
-                {
-                    bestPlayerDist = d;
-                    bestPlayer = c.transform;
-                }
-            }
-            else if (c.GetComponent<MeatLife>() != null)
-            {
-                if (d < bestFoodDist)
-                {
-                    bestFoodDist = d;
-                    bestFood = c.transform;
-                }
+                Vector3 dir = h.transform.position - transform.position;
+                float angle = Vector3.Angle(transform.forward, dir.normalized);
+
+                // ¿Está dentro del FOV?
+                if (angle > angleOfView * 0.5f)
+                    continue;
+
+                // ¿Hay obstáculo en el medio?
+                if (ObstacleCovering(h.transform))
+                    continue;
+
+                // Ok, está en la vista
+                return (true, dir.magnitude);
             }
         }
 
-        // Elegir target según prioridad (player > comida)
-        Transform chosenTarget = null;
-        float chosenDist = Mathf.Infinity;
-
-        if (sawPlayer)
-        {
-            chosenTarget = bestPlayer;
-            chosenDist = bestPlayerDist;
-        }
-        else if (bestFood != null)
-        {
-            chosenTarget = bestFood;
-            chosenDist = bestFoodDist;
-        }
-
-        target = chosenTarget;
-        bool any = (chosenTarget != null);
-
-        return (any, sawPlayer, chosenDist);
+        return (false, Mathf.Infinity);
     }
+    #endregion
     bool CheckPlayerInRadius(float radius)
     {
         if (player == null) return false;
@@ -852,30 +809,34 @@ public class Beelzebub : MonoBehaviour, ISlowable
         Vector3 toTarget = target.position - transform.position;
         return Physics.Raycast(transform.position + offsetYForSight, toTarget.normalized, toTarget.magnitude, obstacles);
     }
-
-    float nextCheckTime = 0f;
-    float checkInterval = 0.5f;
+    bool haveIDied = false;
     private void Update()
     {
-        if (_amIDead) return;
-
-        if (Time.time >= nextCheckTime)
+        if (!haveIDied && _amIDead)
         {
-            nextCheckTime = Time.time + checkInterval;
-            ConditionChecker();
+            haveIDied = true;
+            SendInputToFSM(BInputs.DEATH);
         }
+
+        //if (currentStamina < bossStamina)
+        //{
+        //    currentStamina += Time.deltaTime * staminaMutliplier;
+        //    //Debug.Log(currentStamina);
+        //}
+
+        ConditionChecker();
 
         _myFsm.Update();
     }
     private void FixedUpdate()
     {
-        if (_amIDead) return;
+        if (_amIDead || _isPlayerDead) return;
 
         _myFsm.FixedUpdate();
     }
     private void LateUpdate()
     {
-        if (_amIDead) return;
+        if (_amIDead || _isPlayerDead) return;
 
         _myFsm.LateUpdate();
     }
@@ -901,30 +862,8 @@ public class Beelzebub : MonoBehaviour, ISlowable
 
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, dstToAttk);
-        //Gizmos.DrawWireSphere(transform.position, dstToScratch);
-
-        //if(randomPointPatrol != Vector3.zero)
-        //    Gizmos.DrawSphere(randomPointPatrol, randomPointTolerance);
     }
-    //void OnDestroy()
-    //{
-    //    //if (_enemyLife != null) _enemyLife.OnHit -= HandleOnHit;
-    //}
-    private void OnTriggerEnter(Collider other)
-    {
-        if (_enemyLife.isInvulnerable || !canGetHitstunned) return; //SI SOY INVULNERABLE O NO ME PUEDEN HITSTUNNEAR
-
-        if (other.GetComponent<SwordCollider>()) //SI ME TOCA LA ESPADA PREGUNTO SI PUEDO IR A HITSTUN
-        {
-            _hitCounter++;
-            Debug.LogWarning($"HITSTUN COUNTER: {_hitCounter}");
-
-            if (_hitCounter >= hitsToStun) //SI EL HIT COUNTER ES MENOR A LOS HITS QUE PRECISO PARA HITSTUNNEARME VUELVO TAMBN
-            {
-                GetHitstunned();
-            }
-        }
-    }
+    
     #endregion
 
     #region NECESSARY DEPENDENCIES

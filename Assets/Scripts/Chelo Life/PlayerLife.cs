@@ -139,7 +139,7 @@ public class PlayerLife : Entity
         Life -= dmg;
         LifeBarTakesDamage();
 
-        SoundManager.Instance.PlayOneShotFromIndex(8);
+        //SoundManager.Instance.PlayOneShotFromIndex(8);
 
         if (Life <= 0)
         {

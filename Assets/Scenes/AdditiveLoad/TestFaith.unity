@@ -9051,7 +9051,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillList: 
-  manaCost: 50
+  manaCost: 25
   swordBulletPrefab: {fileID: 2104347979787183863, guid: f0ecccfb28afe8b48b558b51620a43d9,
     type: 3}
   playerTransform: {fileID: 0}
@@ -30592,6 +30592,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingScene: 0
+  caveSpawn: {x: 0, y: 0, z: 0}
+  outsideSpawn: {x: 0, y: 0, z: 0}
+  castleSpawn: {x: 0, y: 0, z: 0}
   textFade: {fileID: 470193608}
   speed: 10
   originalSpeed: 10

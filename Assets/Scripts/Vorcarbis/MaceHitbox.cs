@@ -20,7 +20,7 @@ public class MaceHitbox : MonoBehaviour
         }
         else if (other.TryGetComponent<PlayerLife>(out PlayerLife playerLife1) && wielder2 != null)
         {
-            playerLife1.TakeDamage(wielder2.dmgAttk1);
+            playerLife1.TakeDamage(wielder2.GetCurrentDmg());
         }
     }
 }
