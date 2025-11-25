@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 3190765315998991426}
   - component: {fileID: 7532306537954782564}
   - component: {fileID: 6820744227162356596}
+  - component: {fileID: 506005999707750954}
+  - component: {fileID: 7415890356662239087}
   m_Layer: 0
   m_Name: "FuenteBa\xF1o"
   m_TagString: Untagged
@@ -104,6 +106,50 @@ LODGroup:
     renderers:
     - renderer: {fileID: 7532306537954782564}
   m_Enabled: 1
+--- !u!65 &506005999707750954
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610796837963552851}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 7.1930265, y: 8.488012, z: 3.5109642}
+  m_Center: {x: 0, y: 0, z: 1.1314222}
+--- !u!136 &7415890356662239087
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610796837963552851}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 2.552778
+  m_Height: 8.488012
+  m_Direction: 1
+  m_Center: {x: 0, y: -2.41, z: -0.41}
 --- !u!1 &4920623502441131167
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,7 +195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8f6fd535518f5540b4bcc3099582f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  surfaceType: 2
+  surfaceType: 1
   geometryType: 1
   mesh: {fileID: 5858436417400918577, guid: e325ebb8a0f74c948aa1e55a91c9925b, type: 3}
   cpuSimulation: 1
@@ -159,9 +205,9 @@ MonoBehaviour:
   repetitionSize: 150
   largeWindSpeed: 0
   largeWindOrientationValue: 0
-  largeCurrentSpeedValue: 0
-  largeCurrentOrientationValue: 0
-  largeChaos: 0.8
+  largeCurrentSpeedValue: 3
+  largeCurrentOrientationValue: 180
+  largeChaos: 0
   largeBand0Multiplier: 1
   largeBand0FadeToggle: 1
   largeBand0FadeStart: 1500
@@ -175,7 +221,7 @@ MonoBehaviour:
   ripplesWindOrientationMode: 0
   ripplesWindOrientationValue: 0
   ripplesCurrentMode: 0
-  ripplesCurrentSpeedValue: 0
+  ripplesCurrentSpeedValue: 3.49
   ripplesCurrentOrientationValue: 0
   ripplesChaos: 1
   ripplesFadeToggle: 1
@@ -186,7 +232,7 @@ MonoBehaviour:
   endSmoothness: 0.85
   smoothnessFadeStart: 100
   smoothnessFadeDistance: 500
-  refractionColor: {r: 0.19999997, g: 0.52874285, b: 0.54901963, a: 1}
+  refractionColor: {r: 0.54901963, g: 0.23398563, b: 0.19999997, a: 1}
   maxRefractionDistance: 0.35
   absorptionDistance: 3.8
   scatteringColor: {r: 0, g: 0.33317557, b: 0.6, a: 1}
@@ -202,7 +248,7 @@ MonoBehaviour:
   causticsBand: 0
   virtualPlaneDistance: 4
   foam: 0
-  simulationFoamAmount: 0.3
+  simulationFoamAmount: 1
   simulationFoamDrag: 0
   simulationFoamSmoothness: 1
   foamMask: {fileID: 0}
@@ -251,7 +297,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   foamTexture: {fileID: 0}
-  foamTextureTiling: 0.2
+  foamTextureTiling: 124.85
   waterMask: {fileID: 0}
   waterMaskExtent: {x: 100, y: 100}
   waterMaskOffset: {x: 0, y: 0}

@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class RoomComponent : MonoBehaviour
 {
-    public RoomComponent[] _neighboors;
+    public RoomComponent[] neighboors;
+    public Light[] roomLights;
 }

@@ -35,12 +35,24 @@ Material:
         m_Texture: {fileID: 2800000, guid: c82527097f6109e4c92113cc4563f4b6, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _BaseTex_1:
+        m_Texture: {fileID: 2800000, guid: f9a648f80de35b14ba6c6f91fff4264e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MetallicSmoothTex:
         m_Texture: {fileID: 2800000, guid: f3c16428f326d86438e29e471172f83c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MetallicSmoothTex_1:
+        m_Texture: {fileID: 2800000, guid: ba2f03abb9948a54297dd9843cad4d1f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _NormalTex:
         m_Texture: {fileID: 2800000, guid: a864004293539274eb8a40edb100be7b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _NormalTex_1:
+        m_Texture: {fileID: 2800000, guid: 3965705fe75b3a24698f4306570b9294, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SampleTexture2D_06c9549b5b394091bd91e6ac6d057580_Texture_1_Texture2D:

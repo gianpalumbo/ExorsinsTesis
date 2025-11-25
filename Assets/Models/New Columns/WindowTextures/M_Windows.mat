@@ -99,10 +99,11 @@ Material:
     - _EmissiveIntesity: 0.5
     - _EnableBlendModePreserveSpecularLighting: 1
     - _EnableFogOnTransparent: 1
-    - _Float: 7.5
+    - _Float: 0.3
     - _GlassMetallic: 1
-    - _GlassSmoothness: 0.95
+    - _GlassSmoothness: 0.975
     - _OpaqueCullMode: 2
+    - _Power: 4
     - _QueueControl: 0
     - _QueueOffset: 0
     - _RayTracing: 0

@@ -9,6 +9,7 @@ public class RoomTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) _roomManager.RoomChange(_myRoom);
+        if (other.CompareTag("Player")) StartCoroutine(_roomManager.RoomChange(_myRoom));
+        
     }
 }
