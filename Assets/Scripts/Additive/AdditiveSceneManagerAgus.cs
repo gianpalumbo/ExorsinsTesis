@@ -47,8 +47,9 @@ public static class AdditiveSceneManagerAgus
 
         isLoading = false;
         //yield return new WaitForEndOfFrame();
-
-        if (!string.IsNullOrEmpty(sceneToUnload) && asyncLoad.progress < .95f)
+        if (sceneToUnload == sceneToLoad)
+        { }
+        else if (!string.IsNullOrEmpty(sceneToUnload) && asyncLoad.progress < .95f)
             coroutineHost.StartCoroutine(UnloadSceneAsync(sceneToUnload));
 
 
