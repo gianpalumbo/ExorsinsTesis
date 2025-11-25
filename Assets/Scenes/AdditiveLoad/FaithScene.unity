@@ -31090,7 +31090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c254bec359b388a4b91c0e0792e0c468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingScene: 4
+  startingScene: 1
   caveSpawn: {x: 245, y: 38, z: -230}
   outsideSpawn: {x: 260, y: 36, z: 19}
   castleSpawn: {x: 88, y: 7, z: 0}

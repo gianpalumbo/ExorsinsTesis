@@ -106,7 +106,8 @@ public class PlayerMVC : MonoBehaviour
 
         startingScene = scene;
 
-        ServiceLocator.Instance.GetDependency<TriggerToCastle>().hasEntered = false; //Para reusarse
+        if(ServiceLocator.Instance.TryGetDependency<TriggerToCastle>(out var trigger))
+            trigger.hasEntered = false; //Para reusarse
     }
 
     public static string GetSceneName(StartingScene scene)
