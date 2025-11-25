@@ -87,6 +87,7 @@ public class BossLife : Entity, IHealthBar
 
     protected override void Awake()
     {
+        
         //lifeImage = transform.FindInChildren("LifeBar").GetComponent<Image>();
         //lazyLifeImage = transform.FindInChildren("LazyLifeBar").GetComponent<Image>();
 
@@ -143,6 +144,11 @@ public class BossLife : Entity, IHealthBar
 
     }
 
+    void OnDestroy()
+    {
+        ServiceLocator.Instance.RemoveDependency<BossLife>();
+    }
+
     protected override void Update()
     {
         if (lifeImage == null || lazyLifeImage == null) return;
@@ -163,6 +169,7 @@ public class BossLife : Entity, IHealthBar
     {
         InitializeOnEnable();
 
+        ServiceLocator.Instance.RegisterDependency<BossLife>(this);
         //CHELO WAS HERE: OCULTAR Y MOSTRAR BARRA DE VIDA
         //HideLifeBar();
     }

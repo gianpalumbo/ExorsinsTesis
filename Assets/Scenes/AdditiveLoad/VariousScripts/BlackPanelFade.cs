@@ -10,39 +10,70 @@ public class BlackPanelFade : MonoBehaviour
     [SerializeField] float duration = 2f;
     float targetAlpha = 0f;
 
+    [SerializeField] GameObject button, text;
+
     string startingScene;
 
+    private void Awake()
+    {
+        ServiceLocator.Instance.RegisterDependency<BlackPanelFade>(this);
+    }
+    private void OnDestroy()
+    {
+        ServiceLocator.Instance.RemoveDependency<BlackPanelFade>();
+    }
     private void Start()
     {
-        StartCoroutine(Fade(targetAlpha, duration));
+        StartCoroutine(Fade(targetAlpha, duration, false, true));
 
         startingScene = PlayerMVC.GetSceneName(ServiceLocator.Instance.GetDependency<PlayerMVC>().startingScene);
     }
-    IEnumerator Fade(float targetAlpha, float duration)
+    public IEnumerator Fade(float targetAlpha, float duration, bool withButtons, bool waitScene)
     {
-        float startAlphaValue = blackPanel.color.a;
-        float timeElapsed = 0f;
+        // --- UI Setup según si es fade de victoria o fade normal ---
+        UtilitiesAgus.ToggleCursor(withButtons);
+        UtilitiesAgus.ToggleCanvasGroup(
+            gameObject.GetComponentInParent<CanvasGroup>(),
+            withButtons
+        );
 
-        if (!string.IsNullOrEmpty(startingScene))
+        text.SetActive(withButtons);
+        button.SetActive(withButtons);
+
+        // --- IMPORTANTE: esperar al menos 1 frame para que Start() ejecute ---
+        yield return null;
+
+        // --- No esperar por escena si startingScene está vacío ---
+        if (waitScene && !string.IsNullOrEmpty(startingScene))
             yield return new WaitUntil(() => IsSceneLoaded(startingScene));
-        else
-            yield return null;
 
-        ServiceLocator.Instance.GetDependency<PlayerMVC>().FreezeRotRB();
+        // --- Congelar player si existe ---
+        var player = ServiceLocator.Instance.GetDependency<PlayerMVC>();
+        if (player != null)
+            player.FreezeRotRB();
 
-        while (timeElapsed < duration)
+        // --- Fade real ---
+        float startAlpha = blackPanel.color.a;
+        float t = 0f;
+
+        while (t < duration)
         {
-            timeElapsed += Time.deltaTime;
+            t += Time.deltaTime;
+            float lerpValue = Mathf.Lerp(startAlpha, targetAlpha, t / duration);
+
             var c = blackPanel.color;
-            c.a = Mathf.Lerp(startAlphaValue, targetAlpha, timeElapsed / duration);
+            c.a = lerpValue;
             blackPanel.color = c;
+
             yield return null;
         }
-        var endAlphaValue = blackPanel.color;
-        endAlphaValue.a = targetAlpha;
-        blackPanel.color = endAlphaValue;
 
+        // --- Seteo final por seguridad ---
+        var finalColor = blackPanel.color;
+        finalColor.a = targetAlpha;
+        blackPanel.color = finalColor;
     }
+
     public static bool IsSceneLoaded(string sceneName)
     {
         Scene scene = SceneManager.GetSceneByName(sceneName);

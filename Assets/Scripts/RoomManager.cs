@@ -8,8 +8,10 @@ public class RoomManager : MonoBehaviour
     [SerializeField] RoomComponent _initialRoom;
     RoomComponent _actualRoom;
 
-    private void Start()
+    private void OnEnable()
     {
+        Debug.Log("ME PRENDO SOY ROOM MANAGER");
+
         foreach (var room in _rooms) room.gameObject.SetActive(false);
         _initialRoom.gameObject.SetActive(true);
         foreach (var neighboor in _initialRoom.neighboors) neighboor.gameObject.SetActive(true);

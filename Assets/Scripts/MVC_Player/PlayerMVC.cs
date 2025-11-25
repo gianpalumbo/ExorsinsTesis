@@ -85,13 +85,13 @@ public class PlayerMVC : MonoBehaviour
 
         AdditiveSceneManagerAgus.Initialize(this);
         if (!string.IsNullOrEmpty(GetSceneName(startingScene)))
-            LoadScene(startingScene);
+            AdditiveSceneManagerAgus.LoadSceneAdditiveByName(GetSceneName(startingScene));
 
         //ARRANCO FREEZEADO PARA NO CAERME Y ME DESFREEZEO DESPUES
         FreezeAllRB();
     }
 
-    void LoadScene(StartingScene scene)
+    public void LoadScene(StartingScene scene)
     {
         if (scene == StartingScene.Cave) _spawnPoint.position = caveSpawn;
         else if (scene == StartingScene.Outside) _spawnPoint.position = outsideSpawn;

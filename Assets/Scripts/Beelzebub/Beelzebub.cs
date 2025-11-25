@@ -605,6 +605,9 @@ public class Beelzebub : MonoBehaviour, ISlowable
             _anim.SetTrigger("Death");
             _anim.SetBool("isDead", true);
             gameObject.layer = 9;
+            _enemyLife.HideLifeBar();
+
+            StartCoroutine(ServiceLocator.Instance.GetDependency<BlackPanelFade>().Fade(1f, 4f, true, false));
         };
         death.OnUpdate += () => 
         {
