@@ -85,7 +85,9 @@ public class PlayerMVC : MonoBehaviour
 
         AdditiveSceneManagerAgus.Initialize(this);
         if (!string.IsNullOrEmpty(GetSceneName(startingScene)))
-            AdditiveSceneManagerAgus.LoadSceneAdditiveByName(GetSceneName(startingScene));
+            LoadScene(startingScene);
+
+
 
         //ARRANCO FREEZEADO PARA NO CAERME Y ME DESFREEZEO DESPUES
         FreezeAllRB();
