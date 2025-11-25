@@ -27,7 +27,11 @@ public class DeathManager : MonoBehaviour
         ServiceLocator.Instance.RemoveDependency<DeathManager>();
     }
 
-    public void LastSpawnPoint(Vector3 spawnLocation) { lastSpawn = spawnLocation; }
+    public void LastSpawnPoint(Vector3 spawnLocation) 
+    { 
+        lastSpawn = spawnLocation;
+        Debug.Log(lastSpawn);
+    }
 
     public void Respawn()
     {

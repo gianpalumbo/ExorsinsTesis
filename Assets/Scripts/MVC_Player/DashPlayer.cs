@@ -125,6 +125,11 @@ public class DashPlayer : MonoBehaviour
         _anim.updateMode = AnimatorUpdateMode.AnimatePhysics;
         ServiceLocator.Instance.GetDependency<PlayerMVC>().isResting = false;
         _anim.applyRootMotion = true; // Restauramos RootMotion
+
+        if (playerLife.Life <= 0)
+        {
+            playerLife.TakeDamageWithoutFlinching(0f);
+        }
     }
 
     public void ResetRollProperties() //SI ME PEGAN RESETTEO PROPIEDADES DE ROLL

@@ -100,7 +100,8 @@ public class PlayerMVC : MonoBehaviour
         else if (scene == StartingScene.Castle) _spawnPoint.position = castleSpawn;
 
         transform.position = _spawnPoint.position;
-        ServiceLocator.Instance.GetDependency<DeathManager>().lastSpawn = _spawnPoint.position;
+
+        StartCoroutine(ChangeSpawnPoint(scene));
 
         AdditiveSceneManagerAgus.LoadSceneAdditiveByName(GetSceneName(scene), GetSceneName(startingScene));
 
@@ -108,6 +109,18 @@ public class PlayerMVC : MonoBehaviour
 
         if(ServiceLocator.Instance.TryGetDependency<TriggerToCastle>(out var trigger))
             trigger.hasEntered = false; //Para reusarse
+    }
+
+    IEnumerator ChangeSpawnPoint(StartingScene scene)
+    {
+        yield return new WaitForSeconds(3f);
+        Debug.Log("ENTRE A CAMBIAR");
+
+        DeathManager dm = ServiceLocator.Instance.GetDependency<DeathManager>();
+
+        if (scene == StartingScene.Cave) dm.lastSpawn = caveSpawn;
+        else if (scene == StartingScene.Outside) dm.lastSpawn = outsideSpawn;
+        else if (scene == StartingScene.Castle) dm.lastSpawn = castleSpawn;
     }
 
     public static string GetSceneName(StartingScene scene)
