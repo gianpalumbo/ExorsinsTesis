@@ -100,10 +100,13 @@ public class PlayerMVC : MonoBehaviour
         else if (scene == StartingScene.Castle) _spawnPoint.position = castleSpawn;
 
         transform.position = _spawnPoint.position;
+        ServiceLocator.Instance.GetDependency<DeathManager>().lastSpawn = _spawnPoint.position;
 
         AdditiveSceneManagerAgus.LoadSceneAdditiveByName(GetSceneName(scene), GetSceneName(startingScene));
 
         startingScene = scene;
+
+        ServiceLocator.Instance.GetDependency<TriggerToCastle>().hasEntered = false; //Para reusarse
     }
 
     public static string GetSceneName(StartingScene scene)

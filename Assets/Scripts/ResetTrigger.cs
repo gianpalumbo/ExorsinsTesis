@@ -87,6 +87,9 @@ public class ResetTrigger : MonoBehaviour
     {
         foreach (Entity enemy in enemies)
         {
+            if (enemy.GetComponent<VorcarbisEFSM>() || enemy.GetComponent<Beelzebub>())
+                continue;
+
             if (enemy != null && enemy.gameObject.scene.isLoaded)
             {
                 bool wasActive = enemy.gameObject.activeInHierarchy;

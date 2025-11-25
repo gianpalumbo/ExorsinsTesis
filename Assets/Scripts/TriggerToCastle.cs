@@ -5,8 +5,16 @@ using UnityEngine;
 public class TriggerToCastle : MonoBehaviour
 {
     [SerializeField] CanvasGroup interactuableCG;
-    bool isOnTrigger, hasEntered;
+    public bool isOnTrigger, hasEntered;
 
+    private void Awake()
+    {
+        ServiceLocator.Instance.RegisterDependency<TriggerToCastle>(this);
+    }
+    private void OnDisable()
+    {
+        ServiceLocator.Instance.RemoveDependency<TriggerToCastle>();
+    }
     void Start()
     {
         UtilitiesAgus.ToggleCanvasGroup(interactuableCG, false);
