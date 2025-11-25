@@ -144,9 +144,12 @@ public class AttackEFSM : MonoBehaviour
         {
             HandleCooldowns(); //METODO PARA SUMAR Y CAMBIAR BOOL DE COOLDOWNS
 
+            var u = UtilitiesAgus.GetAnimatorStateProgress("Running BT", _anim);
             //if (canLightAttack)
             //    SendInputToFSM(FaithInputs.LIGHT1);
-
+            
+            //if (u.inState) _controller.isAttacking = false;
+            
             //if (Input.GetMouseButtonDown(1) && canHeavyAttack)
                 //SendInputToFSM(FaithInputs.HEAVY1);
         };
@@ -222,9 +225,9 @@ public class AttackEFSM : MonoBehaviour
                     SendInputToFSM(FaithInputs.LIGHT2);
                 }
             }
-            else //IM FINISHED
+            else if (u.finished)//IM FINISHED
             {
-                //Debug.Log($"ATTACK1 hasFinished {u.finished}. going to thinking");
+                //Debug.Log($"ATTACK2 hasFinished {u.finished}. going to thinking");
                 Think();
             }
             #endregion
@@ -310,7 +313,7 @@ public class AttackEFSM : MonoBehaviour
                     SendInputToFSM(FaithInputs.LIGHT3);
                 }
             }
-            else //IM FINISHED
+            else if (u.finished)//IM FINISHED
             {
                 //Debug.Log($"ATTACK2 hasFinished {u.finished}. going to thinking");
                 Think();
@@ -395,9 +398,9 @@ public class AttackEFSM : MonoBehaviour
                 //Debug.Log($"ATTACK3 in recovery {canRecoverySpeed}, Sword Enabled {_sword.enabled}");
 
             }
-            else //IM FINISHED
+            else if (u.finished)//IM FINISHED
             {
-                //Debug.Log($"ATTACK3 hasFinished {u.finished}. going to thinking");
+                //Debug.Log($"ATTACK2 hasFinished {u.finished}. going to thinking");
                 Think();
             }
 
