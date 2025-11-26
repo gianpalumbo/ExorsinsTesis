@@ -604,7 +604,7 @@ public class Beelzebub : MonoBehaviour, ISlowable
             _enemyLife.IsDead = true;
             _anim.SetTrigger("Death");
             _anim.SetBool("isDead", true);
-            gameObject.layer = 9;
+            gameObject.layer = 0;
             _enemyLife.HideLifeBar();
 
             StartCoroutine(ServiceLocator.Instance.GetDependency<BlackPanelFade>().Fade(1f, 4f, true, false));
@@ -615,7 +615,7 @@ public class Beelzebub : MonoBehaviour, ISlowable
         };
         death.OnExit += x =>
         {
-            gameObject.layer = 0;
+            gameObject.layer = 9;
             _anim.SetBool("isDead", false);
         };
         // CINEMATIC DEATH

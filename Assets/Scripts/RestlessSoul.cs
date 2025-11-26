@@ -571,6 +571,8 @@ public class RestlessSoul : MonoBehaviour , ISlowable
     bool isSlowed;
     public void SlowEntity()
     {
+        if (_enemyLife.IsDead) return;
+
         isSlowed = true;
         originalSpeed = _speed;
         _speed = 0;

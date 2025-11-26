@@ -12273,7 +12273,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 8
   m_TargetDisplay: 0
 --- !u!225 &1713383154
 CanvasGroup:
@@ -31090,7 +31090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c254bec359b388a4b91c0e0792e0c468, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingScene: 2
+  startingScene: 1
   caveSpawn: {x: 245, y: 34, z: -230}
   outsideSpawn: {x: 260, y: 32, z: 19}
   castleSpawn: {x: 85, y: 45, z: 0}

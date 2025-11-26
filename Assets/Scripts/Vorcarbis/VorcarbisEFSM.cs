@@ -912,6 +912,8 @@ public class VorcarbisEFSM : MonoBehaviour , ISlowable
     float originalSpeed;
     public void SlowEntity()
     {
+        if (_enemyLife.IsDead) return;
+
         isSlowed = true;
         originalSpeed = _speed;
         _speed = 0;

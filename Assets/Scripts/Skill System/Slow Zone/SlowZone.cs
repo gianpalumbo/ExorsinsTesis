@@ -27,7 +27,12 @@ public class SlowZone : MonoBehaviour
             slowable.SlowEntity();
 
         VisualEffect chainsVFX = other.GetComponentsInChildren<VisualEffect>(true).FirstOrDefault(vfx => vfx.name == "VFX_Chains");
-        if (chainsVFX != null) chainsVFX.SendEvent("OnPlay");
+        if (chainsVFX != null)
+        {
+            var enemy = other.GetComponent<Entity>();
+            if(enemy.Life > 0)
+                chainsVFX.SendEvent("OnPlay");
+        }
 
         //ISpeedSlower speedSlower = other.GetComponent<ISpeedSlower>();
         //FSMEnemy fsm = other.GetComponent<FSMEnemy>();
