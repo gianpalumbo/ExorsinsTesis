@@ -28,16 +28,27 @@ public class BlackPanelFade : MonoBehaviour
 
         startingScene = PlayerMVC.GetSceneName(ServiceLocator.Instance.GetDependency<PlayerMVC>().startingScene);
     }
+
+    public void FadeInOutNoCoroutine(float fadeInTime, float holdTime, float fadeOutTime)
+    {
+        StartCoroutine(FadeInOut(fadeInTime,holdTime,fadeOutTime));
+    }
+
+    public void FadeNoCoroutine(float targetAlpha, float duration, bool withButtons, bool waitScene)
+    {
+        StartCoroutine(Fade(targetAlpha, duration, withButtons, waitScene));
+    }
+
     public IEnumerator Fade(float targetAlpha, float duration, bool withButtons, bool waitScene)
     {
         Debug.Log("HAGO FADE");
 
         // --- UI Setup según si es fade de victoria o fade normal ---
         UtilitiesAgus.ToggleCursor(withButtons);
-        UtilitiesAgus.ToggleCanvasGroup(
-            gameObject.GetComponentInParent<CanvasGroup>(),
-            withButtons
-        );
+        //UtilitiesAgus.ToggleCanvasGroup(
+        //    gameObject.GetComponentInParent<CanvasGroup>(),
+        //    withButtons
+        //);
 
         text.SetActive(withButtons);
         button.SetActive(withButtons);

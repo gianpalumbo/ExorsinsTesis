@@ -36,10 +36,18 @@ public class TriggerToCastle : MonoBehaviour
         if (isOnTrigger && !hasEntered && Input.GetKeyDown(KeyCode.E))
         {
             hasEntered = true;
-
-            ServiceLocator.Instance.GetDependency<PlayerMVC>().startingScene = PlayerMVC.StartingScene.Outside;
-            ServiceLocator.Instance.GetDependency<PlayerMVC>().LoadScene(PlayerMVC.StartingScene.Castle);
+            ServiceLocator.Instance.GetDependency<PlayerMVC>().FreezeAllRB();
+            StartCoroutine(DoFadeAndLoadScene());
         }
     }
 
+    IEnumerator DoFadeAndLoadScene()
+    {
+        ServiceLocator.Instance.GetDependency<BlackPanelFade>().FadeNoCoroutine(1f, .75f, false, false);
+        yield return new WaitForSeconds(1f);
+        ServiceLocator.Instance.GetDependency<PlayerMVC>().startingScene = PlayerMVC.StartingScene.Outside;
+        ServiceLocator.Instance.GetDependency<PlayerMVC>().LoadScene(PlayerMVC.StartingScene.Castle);
+        yield return new WaitForSeconds(1f);
+        ServiceLocator.Instance.GetDependency<BlackPanelFade>().FadeNoCoroutine(0f, 5f, false, false);
+    }
 }

@@ -12,7 +12,7 @@ public class PlayerMVC : MonoBehaviour
 {
     ModelPlayer _model;
 
-    public Animator blackPanelFade;
+    //public Animator blackPanelFade;
 
     public StartingScene startingScene;
 
@@ -90,9 +90,7 @@ public class PlayerMVC : MonoBehaviour
 
         AdditiveSceneManagerAgus.Initialize(this);
         if (!string.IsNullOrEmpty(GetSceneName(startingScene)))
-        {
-            blackPanelFade.SetTrigger("FadeIn");
-        }
+            LoadScene(startingScene);
     }
 
     public void LoadScene(StartingScene scene)
@@ -113,8 +111,6 @@ public class PlayerMVC : MonoBehaviour
 
         if (ServiceLocator.Instance.TryGetDependency<TriggerToCastle>(out var trigger))
             trigger.hasEntered = false; //Para reusarse
-
-        blackPanelFade.SetTrigger("FadeOut");
     }
 
     IEnumerator ChangeSpawnPoint(StartingScene scene)
@@ -265,17 +261,17 @@ public class PlayerMVC : MonoBehaviour
             myRB.AddForce(-floorNormal, ForceMode.VelocityChange);
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha7) && !AdditiveSceneManagerAgus.isLoading)
+        if (Input.GetKeyDown(KeyCode.Alpha7) && !AdditiveSceneManagerAgus.isLoading && !SceneManager.GetSceneByName("Cave_1").isLoaded)
         {
             AdditiveSceneManagerAgus.isLoading = true;
             LoadScene(StartingScene.Cave);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha8) && !AdditiveSceneManagerAgus.isLoading)
+        else if (Input.GetKeyDown(KeyCode.Alpha8) && !AdditiveSceneManagerAgus.isLoading && !SceneManager.GetSceneByName("Outside_1").isLoaded)
         {
             AdditiveSceneManagerAgus.isLoading = true;
             LoadScene(StartingScene.Outside);
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha9) && !AdditiveSceneManagerAgus.isLoading)
+        else if (Input.GetKeyDown(KeyCode.Alpha9) && !AdditiveSceneManagerAgus.isLoading && !SceneManager.GetSceneByName("Castle").isLoaded)
         {
             AdditiveSceneManagerAgus.isLoading = true;
             LoadScene(StartingScene.Castle);
@@ -316,17 +312,29 @@ public class PlayerMVC : MonoBehaviour
 
     public void FreezeAllRB()
     {
-        myRB.useGravity = false;
-        myRB.velocity = Vector3.zero;
-        myRB.angularVelocity = Vector3.zero;
-        myRB.isKinematic = true;
-        myRB.constraints = RigidbodyConstraints.FreezeAll;
+        var rb = GetComponent<Rigidbody>();
+
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+
+        rb.useGravity = false;
+
+        // Este truco arregla el bug de Build
+        rb.constraints = RigidbodyConstraints.None;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+
+        Physics.SyncTransforms(); // <- CLAVE EN BUILD
     }
     public void FreezeRotRB()
     {
-        myRB.useGravity = true;
-        myRB.isKinematic = false;
-        myRB.constraints = RigidbodyConstraints.FreezeRotation; // | RigidbodyConstraints.FreezePositionY;
+        var rb = GetComponent<Rigidbody>();
+
+        rb.useGravity = true;
+
+        rb.constraints = RigidbodyConstraints.None;
+        rb.constraints = RigidbodyConstraints.FreezeRotation;
+
+        Physics.SyncTransforms();
     }
 
     public void GoForwardWithRB(float strenght)

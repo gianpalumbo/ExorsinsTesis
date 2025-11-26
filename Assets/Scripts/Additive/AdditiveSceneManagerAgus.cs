@@ -34,57 +34,55 @@ public static class AdditiveSceneManagerAgus
 
     private static IEnumerator LoadSceneAsync(string sceneToLoad, string sceneToUnload)
     {
-        // Si ya estoy en esa escena, no la vuelvo a cargar
+        // Evitar doble carga
         if (SceneManager.GetSceneByName(sceneToLoad).isLoaded)
         {
-            Debug.LogWarning($"[AdditiveSceneMgr] La escena '{sceneToLoad}' ya está cargada. Cancelando nuevo load.");
+            Debug.LogWarning($"[AdditiveSceneMgr] La escena '{sceneToLoad}' ya está cargada.");
             isLoading = false;
             yield break;
         }
 
         isLoading = true;
 
-        // Congelá TODO apenas empieza la carga
+        // 1) Congelar TODO ANTES de cargar
         var player = ServiceLocator.Instance.GetDependency<PlayerMVC>();
         if (player != null)
-            player.FreezeAllRB();  // <-- acá frenás al rigid ANTES de empezar el load
+            player.FreezeAllRB();
 
-        // --- Carga la escena ---
+        // 2) Empezar carga async
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
         asyncLoad.allowSceneActivation = false;
 
-        // Espera al 90% (ready to activate)
         while (asyncLoad.progress < 0.9f)
             yield return null;
 
-        // Activá la escena
         asyncLoad.allowSceneActivation = true;
-
-        // Esperá al final real
         yield return new WaitUntil(() => asyncLoad.isDone);
 
-        // Esperá a que Unity la registre
+        // 3) Esperar a que Unity registre la escena
         yield return new WaitUntil(() => SceneManager.GetSceneByName(sceneToLoad).isLoaded);
 
-        // Esperá UN frame para que se instancien todos los objetos
+        // 4) Esperar 1 frame para que instancien objetos
         yield return null;
 
-        // --- Ahora buscá al Player de nuevo (puede haber sido regenerado, movido o reaccesado) ---
+        // ‼️ 5) Esperar un ciclo de físicas (EL FIX REAL)
+        yield return new WaitForFixedUpdate();
+
+        // 6) Buscar player actualizado
         player = ServiceLocator.Instance.GetDependency<PlayerMVC>();
 
-        
-
         if (player != null)
-            player.FreezeRotRB(); // <-- acá lo descongelás SOLO de rotación (tu “unfreeze”)
+            player.FreezeRotRB();
         else
-            Debug.LogWarning("[AdditiveSceneMgr] Player no encontrado después de cargar la escena.");
+            Debug.LogWarning("[AdditiveSceneMgr] Player no encontrado luego de cargar escena.");
 
         isLoading = false;
 
-        // --- Descarga la escena anterior ---
+        // Unload anterior
         if (!string.IsNullOrEmpty(sceneToUnload) && sceneToUnload != sceneToLoad)
             coroutineHost.StartCoroutine(UnloadSceneAsync(sceneToUnload));
     }
+
 
     public static IEnumerator UnloadSceneAsync(string sceneToUnload)
     {
