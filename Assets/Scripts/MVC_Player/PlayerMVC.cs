@@ -12,9 +12,11 @@ public class PlayerMVC : MonoBehaviour
 {
     ModelPlayer _model;
 
+    public Animator blackPanelFade;
+
     public StartingScene startingScene;
 
-    [SerializeField] Vector3 caveSpawn, outsideSpawn, castleSpawn;
+    [SerializeField] Vector3 caveSpawn, outsideSpawn, castleSpawn, outsideCastleDoor;
     public enum StartingScene
     {
         NoScene,
@@ -83,18 +85,20 @@ public class PlayerMVC : MonoBehaviour
 
         myRB = GetComponent<Rigidbody>();
 
-        AdditiveSceneManagerAgus.Initialize(this);
-        if (!string.IsNullOrEmpty(GetSceneName(startingScene)))
-            LoadScene(startingScene);
-
-
-
         //ARRANCO FREEZEADO PARA NO CAERME Y ME DESFREEZEO DESPUES
         FreezeAllRB();
+
+        AdditiveSceneManagerAgus.Initialize(this);
+        if (!string.IsNullOrEmpty(GetSceneName(startingScene)))
+        {
+            blackPanelFade.SetTrigger("FadeIn");
+        }
     }
 
     public void LoadScene(StartingScene scene)
     {
+        FreezeAllRB();
+
         if (scene == StartingScene.Cave) _spawnPoint.position = caveSpawn;
         else if (scene == StartingScene.Outside) _spawnPoint.position = outsideSpawn;
         else if (scene == StartingScene.Castle) _spawnPoint.position = castleSpawn;
@@ -107,13 +111,15 @@ public class PlayerMVC : MonoBehaviour
 
         startingScene = scene;
 
-        if(ServiceLocator.Instance.TryGetDependency<TriggerToCastle>(out var trigger))
+        if (ServiceLocator.Instance.TryGetDependency<TriggerToCastle>(out var trigger))
             trigger.hasEntered = false; //Para reusarse
+
+        blackPanelFade.SetTrigger("FadeOut");
     }
 
     IEnumerator ChangeSpawnPoint(StartingScene scene)
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(1f);
         Debug.Log("ENTRE A CAMBIAR");
 
         DeathManager dm = ServiceLocator.Instance.GetDependency<DeathManager>();
@@ -274,6 +280,10 @@ public class PlayerMVC : MonoBehaviour
             AdditiveSceneManagerAgus.isLoading = true;
             LoadScene(StartingScene.Castle);
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            transform.position = outsideCastleDoor;
+        }
 
         //AGUS ADDON
         if (SoundManager.Instance != null)
@@ -304,9 +314,18 @@ public class PlayerMVC : MonoBehaviour
         return isResting;
     }
 
-    public void FreezeAllRB() => myRB.constraints = RigidbodyConstraints.FreezeAll;
+    public void FreezeAllRB()
+    {
+        myRB.useGravity = false;
+        myRB.velocity = Vector3.zero;
+        myRB.angularVelocity = Vector3.zero;
+        myRB.isKinematic = true;
+        myRB.constraints = RigidbodyConstraints.FreezeAll;
+    }
     public void FreezeRotRB()
     {
+        myRB.useGravity = true;
+        myRB.isKinematic = false;
         myRB.constraints = RigidbodyConstraints.FreezeRotation; // | RigidbodyConstraints.FreezePositionY;
     }
 

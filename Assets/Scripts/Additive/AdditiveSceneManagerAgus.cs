@@ -32,34 +32,58 @@ public static class AdditiveSceneManagerAgus
         coroutineHost.StartCoroutine(LoadSceneAsync(sceneToLoad, sceneToUnload));
     }
 
-    private static IEnumerator LoadSceneAsync(string sceneToLoad,string sceneToUnload)
+    private static IEnumerator LoadSceneAsync(string sceneToLoad, string sceneToUnload)
     {
+        // Si ya estoy en esa escena, no la vuelvo a cargar
+        if (SceneManager.GetSceneByName(sceneToLoad).isLoaded)
+        {
+            Debug.LogWarning($"[AdditiveSceneMgr] La escena '{sceneToLoad}' ya está cargada. Cancelando nuevo load.");
+            isLoading = false;
+            yield break;
+        }
+
         isLoading = true;
 
+        // Congelá TODO apenas empieza la carga
+        var player = ServiceLocator.Instance.GetDependency<PlayerMVC>();
+        if (player != null)
+            player.FreezeAllRB();  // <-- acá frenás al rigid ANTES de empezar el load
+
+        // --- Carga la escena ---
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
         asyncLoad.allowSceneActivation = false;
 
+        // Espera al 90% (ready to activate)
         while (asyncLoad.progress < 0.9f)
             yield return null;
 
+        // Activá la escena
         asyncLoad.allowSceneActivation = true;
-        //OnSceneLoaded?.Invoke();
+
+        // Esperá al final real
+        yield return new WaitUntil(() => asyncLoad.isDone);
+
+        // Esperá a que Unity la registre
+        yield return new WaitUntil(() => SceneManager.GetSceneByName(sceneToLoad).isLoaded);
+
+        // Esperá UN frame para que se instancien todos los objetos
+        yield return null;
+
+        // --- Ahora buscá al Player de nuevo (puede haber sido regenerado, movido o reaccesado) ---
+        player = ServiceLocator.Instance.GetDependency<PlayerMVC>();
+
+        
+
+        if (player != null)
+            player.FreezeRotRB(); // <-- acá lo descongelás SOLO de rotación (tu “unfreeze”)
+        else
+            Debug.LogWarning("[AdditiveSceneMgr] Player no encontrado después de cargar la escena.");
 
         isLoading = false;
-        //yield return new WaitForEndOfFrame();
-        if (sceneToUnload == sceneToLoad)
-        { }
-        else if (!string.IsNullOrEmpty(sceneToUnload) && asyncLoad.progress < .95f)
+
+        // --- Descarga la escena anterior ---
+        if (!string.IsNullOrEmpty(sceneToUnload) && sceneToUnload != sceneToLoad)
             coroutineHost.StartCoroutine(UnloadSceneAsync(sceneToUnload));
-
-
-        // Precarga los shaders de la escena recién cargada (TARDA DEMASIADO)
-        //if (sceneToLoad == "Cave_1")
-        //{
-        //    float start = Time.realtimeSinceStartup;
-        //    Shader.WarmupAllShaders();
-        //    Debug.Log($"[AdditiveSceneManagerAgus] Shaders de '{sceneToLoad}' precalentados en {Time.realtimeSinceStartup - start:F2}s ✅");
-        //}
     }
 
     public static IEnumerator UnloadSceneAsync(string sceneToUnload)

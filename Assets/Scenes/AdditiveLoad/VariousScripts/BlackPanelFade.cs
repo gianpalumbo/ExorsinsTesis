@@ -30,6 +30,8 @@ public class BlackPanelFade : MonoBehaviour
     }
     public IEnumerator Fade(float targetAlpha, float duration, bool withButtons, bool waitScene)
     {
+        Debug.Log("HAGO FADE");
+
         // --- UI Setup según si es fade de victoria o fade normal ---
         UtilitiesAgus.ToggleCursor(withButtons);
         UtilitiesAgus.ToggleCanvasGroup(
@@ -45,7 +47,7 @@ public class BlackPanelFade : MonoBehaviour
 
         // --- No esperar por escena si startingScene está vacío ---
         if (waitScene && !string.IsNullOrEmpty(startingScene))
-            yield return new WaitUntil(() => IsSceneLoaded(startingScene));
+            yield return new WaitForSeconds(2f);
 
         // --- Congelar player si existe ---
         var player = ServiceLocator.Instance.GetDependency<PlayerMVC>();
@@ -73,6 +75,53 @@ public class BlackPanelFade : MonoBehaviour
         finalColor.a = targetAlpha;
         blackPanel.color = finalColor;
     }
+
+    public IEnumerator FadeInOut(float fadeInTime, float holdTime, float fadeOutTime)
+    {
+        // --- Fade IN (0 ? 1) ---
+        float t = 0f;
+        float startAlpha = blackPanel.color.a;
+        while (t < fadeInTime)
+        {
+            t += Time.deltaTime;
+            float lerp = Mathf.Lerp(startAlpha, 1f, t / fadeInTime);
+
+            var c = blackPanel.color;
+            c.a = lerp;
+            blackPanel.color = c;
+
+            yield return null;
+        }
+
+        // Fijar alpha 1
+        var c1 = blackPanel.color;
+        c1.a = 1f;
+        blackPanel.color = c1;
+
+        // --- Espera ---
+        if (holdTime > 0f)
+            yield return new WaitForSeconds(holdTime);
+
+        // --- Fade OUT (1 ? 0) ---
+        t = 0f;
+        while (t < fadeOutTime)
+        {
+            t += Time.deltaTime;
+            float lerp = Mathf.Lerp(1f, 0f, t / fadeOutTime);
+
+            var c = blackPanel.color;
+            c.a = lerp;
+            blackPanel.color = c;
+
+            yield return null;
+        }
+
+        // Fijar alpha 0
+        var c0 = blackPanel.color;
+        c0.a = 0f;
+        blackPanel.color = c0;
+    }
+
 
     public static bool IsSceneLoaded(string sceneName)
     {

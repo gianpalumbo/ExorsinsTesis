@@ -64,7 +64,7 @@ public class ViewPlayer
         {
             _animator.speed = 1.5f;
         }
-        else if (Input.GetKeyDown(KeyCode.P) && Input.GetKeyDown(KeyCode.Z))
+        else if (Input.GetKey(KeyCode.P))
         {
             _animator.speed = 3;
         }
