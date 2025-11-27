@@ -6,6 +6,8 @@ public class BileMortar : MonoBehaviour
     [SerializeField] float force = 10f;
     [SerializeField] float spread = 0.5f; // cuanto se dispersan los proyectiles
 
+    [SerializeField] GameObject acidPool;
+
     Rigidbody rb;
 
     void Awake()
@@ -43,6 +45,11 @@ public class BileMortar : MonoBehaviour
         {
             player.TakeDamage(dmg / 2);
             player.PoisonPlayer(dmgPerInterval, poisonTime);
+        }
+        else if (other.gameObject.layer == 10)
+        {
+            Instantiate(acidPool, transform.position, Quaternion.identity);
+            Destroy(gameObject);
         }
     }
 }

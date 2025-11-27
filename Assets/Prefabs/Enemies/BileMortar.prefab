@@ -251,11 +251,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2ea64eee141b5748878d7b18fc1fd51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dmg: 0
-  maxDmg: 0
-  dmgPerInterval: 0
+  dmg: 10
+  maxDmg: 10
+  dmgPerInterval: 0.1
   poisonTime: 3
   force: 12
   spread: 1
-  bilePuddle: {fileID: 3047364714812720515, guid: 2045b083d39611148bca46db1da273fd,
+  acidPool: {fileID: 3047364714812720515, guid: 2045b083d39611148bca46db1da273fd,
     type: 3}
