@@ -68,11 +68,14 @@ public class EnemyLife : Entity, IHealthBar
 
     public HashSet<IHealthBar> activeBars = new HashSet<IHealthBar>();
     private Coroutine delayedReleaseCoroutine;
-    
+
     //CHELO WAS HERE
     //private float _slowSpeed;
     //[Range(0f, 1f)] public float slowFactor = 0.5f; //lo meti en entity, cualquiera puede tener o no un % de slow
     //EN ENTITY NO SE DEJA VER POR NADIE, NI EN PUBLICO
+
+    [Header("HAS KEY")]
+    public bool hasKey = false;
 
     protected override void Awake()
     {
@@ -190,7 +193,21 @@ public class EnemyLife : Entity, IHealthBar
         
         if (Life <= 0 && !_isDead )
         {
-            
+            //AGUS WAS HERE, HARDCODEE QUE TE DE LLAVE SI LO MATAS Y SI HASKEY
+            //if (hasKey && ServiceLocator.Instance.GetDependency<AttackEFSM>().keyCount < 3)
+            //    ServiceLocator.Instance.GetDependency<AttackEFSM>().keyCount++;
+            if (hasKey)
+            {
+                var efsm = ServiceLocator.Instance.GetDependency<AttackEFSM>();
+                efsm.keyCount++;
+                efsm.keyCountTMP.text = efsm.keyCount.ToString()+"/3 keys";
+                Debug.Log($"Sumé llave. Ahora tengo: {efsm.keyCount}");
+            }
+            else
+            {
+                Debug.Log("Este enemigo NO tiene hasKey!");
+            }
+
             _isDead = true;
             StartCoroutine(DeathDisolve());
             _rb.velocity = Vector3.zero;

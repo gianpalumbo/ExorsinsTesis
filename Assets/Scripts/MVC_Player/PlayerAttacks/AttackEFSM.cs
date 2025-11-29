@@ -6,6 +6,8 @@ using IA2;
 using System;
 using JetBrains.Annotations;
 
+using TMPro;
+
 [System.Serializable]
 public struct AttacksData
 {
@@ -69,6 +71,11 @@ public class AttackEFSM : MonoBehaviour
     Queue<KeyCode> inputBuffer;
     [SerializeField] float unclickingWindow = .2f;
     #endregion //NO USANDO POR AHORA - CAMBIE POR UN BOOL QUE SE PRENDA Y CON UN INVOKE EN UNA VENTANA SE APAGUE
+
+    #region KEY HANDLER
+    public int keyCount = 0;
+    public TextMeshProUGUI keyCountTMP;
+    #endregion
 
     private void OnEnable()
     {
@@ -588,8 +595,12 @@ public class AttackEFSM : MonoBehaviour
         return (found.Count > 0, found);
     }
 
-
-    void DamageEntity(Entity entity) => entity.TakeDamage(currentDmg);
+    //DAMAGE ENTITY AND ASK IF IT HAS KEY
+    int temp = 0;
+    void DamageEntity(Entity entity)
+    {
+        entity.TakeDamage(currentDmg);
+    }
 
     public void ResetPlayerOnHit()
     {
