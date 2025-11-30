@@ -129,7 +129,7 @@ public class RestlessSoul : MonoBehaviour , ISlowable
         idle.OnEnter += x =>
         {
             timeToCrouch = UnityEngine.Random.Range(1f, 6f);
-            Debug.Log(timeToCrouch);
+            //Debug.Log(timeToCrouch);
             _anim.SetBool("Idle", true);
             //Debug.Log("Entr� a IDLE");
         };
@@ -340,7 +340,7 @@ public class RestlessSoul : MonoBehaviour , ISlowable
         idle.OnEnter += x =>
         {
             timeToCrouch = UnityEngine.Random.Range(1f, 6f);
-            Debug.Log(timeToCrouch);
+            //Debug.Log(timeToCrouch);
             _anim.SetBool("Idle", true);
             //Debug.Log("Entr� a IDLE");
         };
@@ -514,7 +514,7 @@ public class RestlessSoul : MonoBehaviour , ISlowable
     {
         //Debug.Log(inp);
         _myFsm.SendInput(inp);
-        currentState.text = _myFsm.Current.Name;
+        //currentState.text = _myFsm.Current.Name;
     }
     float nextCheckTime = 0f;
     float checkInterval = 0.5f;

@@ -45,6 +45,11 @@ public class BlackPanelFade : MonoBehaviour
 
         // --- UI Setup según si es fade de victoria o fade normal ---
         UtilitiesAgus.ToggleCursor(withButtons);
+
+        if (withButtons)
+            gameObject.GetComponentInParent<CanvasGroup>().blocksRaycasts = true;
+        else
+            gameObject.GetComponentInParent<CanvasGroup>().blocksRaycasts = false;
         //UtilitiesAgus.ToggleCanvasGroup(
         //    gameObject.GetComponentInParent<CanvasGroup>(),
         //    withButtons

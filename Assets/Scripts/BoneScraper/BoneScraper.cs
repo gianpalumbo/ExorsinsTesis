@@ -200,7 +200,7 @@ public class BoneScraper : MonoBehaviour , ISlowable
             //Ataques al player (máxima prioridad)
             if (_isPlayerOnFeastRange && _amIHungry)
             {
-                SendInputToFSM(BSInputs.FEAST);
+                SendInputToFSM(BSInputs.SCRATCH);
                 return;
             }
             if (_isPlayerOnScratchRange && !_amIHungry)
