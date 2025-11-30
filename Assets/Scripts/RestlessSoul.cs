@@ -5,11 +5,11 @@ using UnityEngine.VFX;
 using IA2;
 using System;
 using JetBrains.Annotations;
-
+using TMPro;
 
 public class RestlessSoul : MonoBehaviour , ISlowable
 {
-    public enum RSInputs { THINKING, IDLE, FOLLOW, ATTACK, HITSTUN, DIE }
+    public enum RSInputs { THINKING, IDLE, FOLLOW, ATTACK, HITSTUN, DIE, CROUCH }
     [SerializeField] private EventFSM<RSInputs> _myFsm;
     [SerializeField] private Rigidbody _myRb;
     [SerializeField] Vector3 _currentVelocity;
@@ -26,17 +26,19 @@ public class RestlessSoul : MonoBehaviour , ISlowable
     //CHELO WAS HERE, CAMBIE PLAYERMVC POR UN TARGET PARA QUE AGARRE CUALQUIERA
     //[SerializeField] GameObject target;
     //CHELO WAS HERE: YA NO SE QUE ESTOY HACIENDO, CREE ESTADOS PUROS SIN VAR PARA QUE LOS PUEDA REUTILIZAR AL RESETEAR EL ENEMIGO
-    private State<RSInputs> thinking, idle, follow, attack, hitstun, die;
+    private State<RSInputs> thinking, idle, follow, attack, hitstun, die, crouch;
 
     bool hasBeenInstantiated = false, canThink = true; //Para saber si ya se instancio el enemigo, para no volver a instanciarlo
     //Radius Attack and Follow
     [SerializeField] float followRadius, attackRadius;
     [SerializeField] float _speed = 2f, _currentSpeed, _rotationSpeed = 8f, _currentRotation;
     [SerializeField] float counter;
-    [SerializeField] float timeToRest = 1f, timeAfterHit = .5f;
+    [SerializeField] float timeToRest = 1f, timeAfterHit = .5f, timeCrouching = 6f;
     [SerializeField] float dmg;
 
     [SerializeField] bool isOnFollowRange, isOnAttackRange, hasBeenHit, isDeath, animationFinished, isPlayerDeath; //Este va a ser nuestro objetivo
+
+    [SerializeField] TextMeshProUGUI currentState;
 
     private void Awake()
     //private void Start()
@@ -75,6 +77,8 @@ public class RestlessSoul : MonoBehaviour , ISlowable
         hitstun = new State<RSInputs>("HITSTUN");
         die = new State<RSInputs>("DIE");
 
+        crouch = new State<RSInputs>("CROUCH");
+
         #endregion
         #region StateConfigurer States currently 9 States
         //THINKING VA A PODER PASAR A TODOS
@@ -89,6 +93,12 @@ public class RestlessSoul : MonoBehaviour , ISlowable
             .Done();
 
         StateConfigurer.Create(idle)
+            .SetTransition(RSInputs.FOLLOW, follow)
+            .SetTransition(RSInputs.CROUCH, crouch)
+            .Done();
+
+        StateConfigurer.Create(crouch)
+            .SetTransition(RSInputs.IDLE, idle)
             .SetTransition(RSInputs.FOLLOW, follow)
             .Done();
 
@@ -115,17 +125,39 @@ public class RestlessSoul : MonoBehaviour , ISlowable
 
         #region StatesLogicAndTransitions
         //IDLE
+        float timeToCrouch = 0;
         idle.OnEnter += x =>
         {
+            timeToCrouch = UnityEngine.Random.Range(1f, 6f);
+            Debug.Log(timeToCrouch);
             _anim.SetBool("Idle", true);
             //Debug.Log("Entr� a IDLE");
         };
         idle.OnUpdate += () =>
         {
+            if(GenericCounter(timeToCrouch))
+                SendInputToFSM(RSInputs.CROUCH);
+
             if (isOnFollowRange) SendInputToFSM(RSInputs.FOLLOW);
             if (isSlowed) SendInputToFSM(RSInputs.THINKING);
         };
-        idle.OnExit += x => _anim.SetBool("Idle", false);
+        idle.OnExit += x =>
+        {
+            ResetCounter();
+            _anim.SetBool("Idle", false);
+        };
+        //CROUCH
+        crouch.OnEnter += x => _anim.SetTrigger("Crouch");
+        crouch.OnUpdate += () =>
+        {
+            var u = UtilitiesAgus.GetAnimatorStateProgress("CrouchFinal", _anim);
+
+            if (isOnFollowRange) SendInputToFSM(RSInputs.FOLLOW);
+
+            if (u.inState && u.finished)
+                SendInputToFSM(RSInputs.IDLE);
+        };
+        crouch.OnExit += x => _anim.ResetTrigger("Crouch");
         //FOLLOW
         follow.OnEnter += x =>
         {
@@ -256,6 +288,8 @@ public class RestlessSoul : MonoBehaviour , ISlowable
         hitstun = new State<RSInputs>("HITSTUN");
         die = new State<RSInputs>("DIE");
 
+        crouch = new State<RSInputs>("CROUCH");
+
         #endregion
         #region StateConfigurer States currently 9 States
         //THINKING VA A PODER PASAR A TODOS
@@ -270,6 +304,12 @@ public class RestlessSoul : MonoBehaviour , ISlowable
             .Done();
 
         StateConfigurer.Create(idle)
+            .SetTransition(RSInputs.FOLLOW, follow)
+            .SetTransition(RSInputs.CROUCH, crouch)
+            .Done();
+
+        StateConfigurer.Create(crouch)
+            .SetTransition(RSInputs.IDLE, idle)
             .SetTransition(RSInputs.FOLLOW, follow)
             .Done();
 
@@ -296,17 +336,40 @@ public class RestlessSoul : MonoBehaviour , ISlowable
 
         #region StatesLogicAndTransitions
         //IDLE
+        float timeToCrouch = 0;
         idle.OnEnter += x =>
         {
+            timeToCrouch = UnityEngine.Random.Range(1f, 6f);
+            Debug.Log(timeToCrouch);
             _anim.SetBool("Idle", true);
             //Debug.Log("Entr� a IDLE");
         };
         idle.OnUpdate += () =>
         {
+            if (GenericCounter(timeToCrouch))
+                SendInputToFSM(RSInputs.CROUCH);
+
             if (isOnFollowRange) SendInputToFSM(RSInputs.FOLLOW);
             if (isSlowed) SendInputToFSM(RSInputs.THINKING);
         };
-        idle.OnExit += x => _anim.SetBool("Idle", false);
+        idle.OnExit += x =>
+        {
+            ResetCounter();
+            _anim.SetBool("Idle", false);
+        };
+        //CROUCH
+        crouch.OnEnter += x => _anim.SetTrigger("Crouch");
+        crouch.OnUpdate += () =>
+        {
+            var u = UtilitiesAgus.GetAnimatorStateProgress("CrouchFinal", _anim);
+
+            if(isOnFollowRange)
+                SendInputToFSM(RSInputs.FOLLOW);
+
+            if (u.inState && u.finished)
+                SendInputToFSM(RSInputs.IDLE);
+        };
+        crouch.OnExit += x => _anim.ResetTrigger("Crouch");
         //FOLLOW
         follow.OnEnter += x =>
         {
@@ -405,19 +468,8 @@ public class RestlessSoul : MonoBehaviour , ISlowable
     }
     bool GenericCounter(float time)
     {
-        //variable que va a ir de cero a time, mientras que no es igual a time no se vuelve true
-        if (counter != time)
-        {
-            //Debug.Log($"tiempo de contador: {counter}");
-            counter += Time.deltaTime;
-            counter = Mathf.Clamp(counter, 0, time);
-            return false;
-        }
-        else
-        {
-            //Debug.Log("termine");
-            return true;
-        }
+        counter += Time.deltaTime;
+        return counter >= time;
     }
     void ResetCounter() { counter = 0; }
     //void HitboxOn() { attackPrefab.SetActive(true); }
@@ -462,6 +514,7 @@ public class RestlessSoul : MonoBehaviour , ISlowable
     {
         //Debug.Log(inp);
         _myFsm.SendInput(inp);
+        currentState.text = _myFsm.Current.Name;
     }
     float nextCheckTime = 0f;
     float checkInterval = 0.5f;
