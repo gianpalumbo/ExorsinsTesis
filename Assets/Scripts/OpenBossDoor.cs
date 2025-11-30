@@ -18,18 +18,37 @@ public class OpenBossDoor : MonoBehaviour
         UtilitiesAgus.ToggleCanvasGroup(interactuableCG, false);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (hasEntered) return;
+
+    //    if (collision.gameObject.TryGetComponent<AttackEFSM>(out AttackEFSM player))
+    //        playerKeyCount = player.keyCount;
+    //    UtilitiesAgus.ToggleCanvasGroup(interactuableCG, true);
+    //    isOnTrigger = true;
+    //}
+
+    private void OnTriggerEnter(Collider other)
     {
         if (hasEntered) return;
 
-        if (collision.gameObject.TryGetComponent<AttackEFSM>(out AttackEFSM player))
+        if (other.gameObject.TryGetComponent<AttackEFSM>(out AttackEFSM player))
             playerKeyCount = player.keyCount;
         UtilitiesAgus.ToggleCanvasGroup(interactuableCG, true);
         isOnTrigger = true;
     }
-    private void OnCollisionExit(Collision collision)
+    //private void OnCollisionExit(Collision collision)
+    //{
+    //    if (collision.gameObject.TryGetComponent<AttackEFSM>(out AttackEFSM player))
+    //    {
+    //        UtilitiesAgus.ToggleCanvasGroup(interactuableCG, false);
+    //        isOnTrigger = false;
+    //    }
+    //}
+
+    private void OnTriggerExit(Collider other)
     {
-        if (collision.gameObject.TryGetComponent<AttackEFSM>(out AttackEFSM player))
+        if (other.gameObject.TryGetComponent<AttackEFSM>(out AttackEFSM player))
         {
             UtilitiesAgus.ToggleCanvasGroup(interactuableCG, false);
             isOnTrigger = false;
