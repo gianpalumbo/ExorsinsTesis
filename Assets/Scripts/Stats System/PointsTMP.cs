@@ -5,7 +5,7 @@ using TMPro;
 
 public class PointsTMP : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _pointsText;
+    [SerializeField] public TextMeshProUGUI _pointsText;
     [SerializeField] private TextMeshProUGUI _pointsTextMenu;
 
     private void Awake()

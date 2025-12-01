@@ -4073,7 +4073,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &510463972
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6707,7 +6707,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -242.45001}
+  m_AnchoredPosition: {x: 960, y: -298.0625}
   m_SizeDelta: {x: 443.9192, y: 83.2348}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &869337803
@@ -8271,7 +8271,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -94.15}
+  m_AnchoredPosition: {x: 960, y: -112.6875}
   m_SizeDelta: {x: 443.9192, y: 83.2348}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1129176478
@@ -11211,7 +11211,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -687.35}
+  m_AnchoredPosition: {x: 960, y: -668.8125}
   m_SizeDelta: {x: 443.9192, y: 83.2348}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1460929882
@@ -15106,7 +15106,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -390.75}
+  m_AnchoredPosition: {x: 960, y: -483.4375}
   m_SizeDelta: {x: 443.9192, y: 83.2348}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2126263085
@@ -31620,6 +31620,7 @@ MonoBehaviour:
   soulSummon: 113
   _spawnPoint: {fileID: 5984550563337352009}
   _acquiredSouls: []
+  keysCanvas: {fileID: 1309852171}
 --- !u!4 &4236640003820571550
 Transform:
   m_ObjectHideFlags: 0

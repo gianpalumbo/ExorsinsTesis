@@ -11,7 +11,7 @@ public class PointsManager : MonoBehaviour
 {
     public static PointsManager Instance { get; private set; }
 
-    [SerializeField] private int currentPoints;
+    [SerializeField] public int currentPoints;
     [SerializeField] private TextMeshProUGUI _pointsText;
     [SerializeField] private TextMeshProUGUI _pointsTextMenu;
 
@@ -93,7 +93,7 @@ public class PointsManager : MonoBehaviour
         //Debug.Log("Puntos reiniciados.");
     }
 
-    private void UIText()
+    public void UIText()
     {
         if (_pointsText != null) _pointsText.text = (currentPoints.ToString());
         if (_pointsTextMenu != null) _pointsTextMenu.text = (currentPoints.ToString());

@@ -155,7 +155,11 @@ public class PauseManager : MonoBehaviour
         //CHELO WAS HERE: ELIMINO ID DEL CURSOR MANAGER
         CursorUIManager.Instance.ReleaseCursorRequest(id);
 
-
+        if(SoundManager.Instance != null)
+        {
+            SoundManager.Instance.ChangeToMenuMusic();
+            SoundManager.Instance.UnMuteMusic();
+        }
 
         SceneManager.LoadScene(0);
     }

@@ -379,7 +379,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  baseSpeed: 1
+  baseSpeed: 2.5
   acceleration: 2
   soulsToAdd: 100
   offsetY: 0.25

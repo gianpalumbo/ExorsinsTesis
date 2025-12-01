@@ -156,4 +156,14 @@ public class SoundManager : MonoBehaviour
         sliderMusic.value = PlayerPrefs.GetFloat("musicVolume", 1);
         sliderSFX.value = PlayerPrefs.GetFloat("sfxVolume", 1);
     }
+
+    public void MuteMusic() => musicAudioSource.mute = true;
+
+    public void UnMuteMusic()
+    {
+        musicAudioSource.mute = false;
+        musicAudioSource.volume = 1f;
+        musicAudioSource.UnPause();
+        musicAudioSource.Play();
+    }
 }

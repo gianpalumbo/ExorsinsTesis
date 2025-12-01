@@ -6,6 +6,8 @@ using TMPro;
 
 public class SanctuaryCanvas : MonoBehaviour
 {
+    public TextMeshProUGUI pointsSanctuary;
+
     public GameObject sanctuaryCanvas; // Panel con botones Hablar y Descansar
     public GameObject InteractuableCanvas; //Tecla E
     public Button dialogueButton;
@@ -131,6 +133,8 @@ public class SanctuaryCanvas : MonoBehaviour
 
     public void OpenSanctuaryMenu()
     {
+        pointsSanctuary.text = PointsManager.Instance.currentPoints.ToString();
+
         //actualSanctuary.onSantuary = true;
         ServiceLocator.Instance.GetDependency<PlayerMVC>().SetResting(true); //CHELO WAS HERE: bloqueo inputs
         ServiceLocator.Instance.GetDependency<PlayerMVC>().FreezeAllRB();
@@ -153,6 +157,7 @@ public class SanctuaryCanvas : MonoBehaviour
 
         //Cursor.lockState = CursorLockMode.None;
         //Cursor.visible = true;
+
 
         TurnOnCGs(_cgSanctuaryCanvas);
         TurnInteractuable(false);

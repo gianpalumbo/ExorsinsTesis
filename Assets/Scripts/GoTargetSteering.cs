@@ -48,6 +48,7 @@ public class GoTargetSteering : MonoBehaviour
         if (other.TryGetComponent<PlayerMVC>(out PlayerMVC player))
         {
             player.AddSoulsNew(soulsToAdd);
+            PointsManager.Instance.UIText();
             Destroy(gameObject);
         }
     }

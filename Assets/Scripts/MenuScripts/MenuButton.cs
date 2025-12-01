@@ -115,8 +115,11 @@ public class MenuButton : MonoBehaviour
     //        yield return new WaitForSeconds(.5f); 
     //    } 
     //}
+
     private IEnumerator FadeAndLoad(string sceneName)
     {
+        UtilitiesAgus.ToggleCursor(false);
+
         // Mostrar panel de precarga de shaders
         preloadShadersPanel.SetActive(true);
         yield return new WaitForSeconds(3f);

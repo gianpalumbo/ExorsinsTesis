@@ -72,6 +72,9 @@ public class PlayerMVC : MonoBehaviour
     [SerializeField] private Transform _spawnPoint;
     [SerializeField] private List<GameObject> _acquiredSouls = new List<GameObject>();
     // El KarmicMenu le pasa un "alma", por ahora un gameobject, despues veo como hacerlo para c/u
+
+    [SerializeField] GameObject keysCanvas;
+
     private void Awake()
     {
         _model = new ModelPlayer(myRB, transform, speed, jumpStrenght, rollStrenght, maxLife, life, isGrounded, canRoll,
@@ -97,9 +100,21 @@ public class PlayerMVC : MonoBehaviour
     {
         FreezeAllRB();
 
-        if (scene == StartingScene.Cave) _spawnPoint.position = caveSpawn;
-        else if (scene == StartingScene.Outside) _spawnPoint.position = outsideSpawn;
-        else if (scene == StartingScene.Castle) _spawnPoint.position = castleSpawn;
+        if (scene == StartingScene.Cave)
+        {
+            keysCanvas.SetActive(false);
+            _spawnPoint.position = caveSpawn;
+        }
+        else if (scene == StartingScene.Outside)
+        {
+            keysCanvas.SetActive(false);
+            _spawnPoint.position = outsideSpawn;
+        }
+        else if (scene == StartingScene.Castle)
+        {
+            keysCanvas.SetActive(true);
+            _spawnPoint.position = castleSpawn;
+        }
 
         transform.position = _spawnPoint.position;
 

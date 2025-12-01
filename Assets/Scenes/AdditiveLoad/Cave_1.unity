@@ -2036,6 +2036,7 @@ MonoBehaviour:
   UpgradeButton: {fileID: 153905931}
   LevelText: {fileID: 1786947348}
   CostText: {fileID: 1216834109}
+  pointsSanctuary: {fileID: 1052805048}
 --- !u!114 &153905931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3388,6 +3389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f7f89087e258bfb40aee28d9e9ed328c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pointsSanctuary: {fileID: 1052805048}
   sanctuaryCanvas: {fileID: 255723716}
   InteractuableCanvas: {fileID: 635674570}
   dialogueButton: {fileID: 794272054}
@@ -17934,6 +17936,7 @@ MonoBehaviour:
   UpgradeButton: {fileID: 864671768}
   LevelText: {fileID: 1542302105}
   CostText: {fileID: 400846772}
+  pointsSanctuary: {fileID: 1052805048}
 --- !u!114 &864671768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20624,7 +20627,7 @@ GameObject:
   - component: {fileID: 1052805049}
   - component: {fileID: 1052805048}
   m_Layer: 5
-  m_Name: StatsText (TMP)
+  m_Name: PointsTMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

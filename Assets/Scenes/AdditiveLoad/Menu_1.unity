@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.021445865, g: 0.01771033, b: 0.02268404, a: 1}
+  m_IndirectSpecularColor: {r: 0.021456392, g: 0.017723845, b: 0.022697302, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1069,6 +1069,7 @@ GameObject:
   - component: {fileID: 320780648}
   - component: {fileID: 320780650}
   - component: {fileID: 320780649}
+  - component: {fileID: 320780651}
   m_Layer: 5
   m_Name: PreLoadingPanel
   m_TagString: Untagged
@@ -1135,6 +1136,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 320780647}
   m_CullTransparentMesh: 1
+--- !u!225 &320780651
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320780647}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &321085651
 GameObject:
   m_ObjectHideFlags: 0
@@ -2905,6 +2918,7 @@ GameObject:
   - component: {fileID: 609614455}
   - component: {fileID: 609614457}
   - component: {fileID: 609614456}
+  - component: {fileID: 609614458}
   m_Layer: 5
   m_Name: LoadingPanel
   m_TagString: Untagged
@@ -2973,6 +2987,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 609614454}
   m_CullTransparentMesh: 1
+--- !u!225 &609614458
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609614454}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &782240005
 GameObject:
   m_ObjectHideFlags: 0
@@ -4143,7 +4169,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 25, y: 5}
+  m_AnchoredPosition: {x: 22, y: 72}
   m_SizeDelta: {x: 472.806, y: 88.123}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &1059460532
@@ -6536,8 +6562,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 868.0001, y: -451}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 876, y: -440.81}
+  m_SizeDelta: {x: 198.3821, y: 198.3832}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &1722059919
 Animator:
@@ -6573,14 +6599,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
+  m_Color: {r: 0.6792453, g: 0.6792453, b: 0.6792453, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 8c823c83fb7ce664ca18aea383f599a4, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1

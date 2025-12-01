@@ -18,6 +18,8 @@ public class StatButton : MonoBehaviour
 
     private PlayerStats playerStats;
 
+    public TextMeshProUGUI pointsSanctuary;
+
     void Start()
     {
         playerStats = FindObjectOfType<PlayerStats>();
@@ -60,6 +62,8 @@ public class StatButton : MonoBehaviour
     {
         int lvl = PointsManager.Instance.GetStatLevel(StatKey);
         int cost = PointsManager.Instance.GetStatCost(StatKey);
+
+        pointsSanctuary.text = PointsManager.Instance.currentPoints.ToString();
 
         LevelText.text = $"Lvl {lvl}";
         CostText.text = cost > 0 ? $"{cost} pts" : "�";
