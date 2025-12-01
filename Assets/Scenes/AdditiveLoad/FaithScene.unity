@@ -517,7 +517,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &51257800
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2121,26 +2121,18 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'MOVE: WASD
 
-    DASH: SPACEBAR
+    ROLL: SPACEBAR
 
     LIGHT ATTACK COMBO: LEFT CLICK
 
     HEAVY
     ATTACK: HOLD LEFT CLICK
 
-    SKILL WHEEL: TAB
+    CHANGE SKILL: TAB
 
     USE SKILL: X
 
-    SOULS SPAWN:
-    Q
-
-
-    (DEBUG ONLY)
-
-    HURT YOURSELF: T
-
-    HEAL YOURSELF: Y'
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d24aab0dba0609d4f89508a655933116, type: 2}
   m_sharedMaterial: {fileID: 4953541889013200674, guid: d24aab0dba0609d4f89508a655933116,
@@ -2168,10 +2160,10 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40.5
-  m_fontSizeBase: 42
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
-  m_enableAutoSizing: 1
+  m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
@@ -4100,7 +4092,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -539.47974}
+  m_AnchoredPosition: {x: 960, y: -539.05005}
   m_SizeDelta: {x: 443.9192, y: 83.2348}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &510463973
@@ -6136,7 +6128,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 480, y: -41.6174}
+  m_AnchoredPosition: {x: 960, y: -41.6174}
   m_SizeDelta: {x: 443.9192, y: 83.2348}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &772027203
@@ -6715,7 +6707,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -242.63416}
+  m_AnchoredPosition: {x: 960, y: -242.45001}
   m_SizeDelta: {x: 443.9192, y: 83.2348}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &869337803
@@ -8278,7 +8270,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -94.21139}
+  m_AnchoredPosition: {x: 960, y: -94.15}
   m_SizeDelta: {x: 443.9192, y: 83.2348}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1129176478
@@ -11083,7 +11075,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -687.90247}
+  m_AnchoredPosition: {x: 960, y: -687.35}
   m_SizeDelta: {x: 443.9192, y: 83.2348}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1460929882
@@ -14826,7 +14818,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 960, y: -391.05695}
+  m_AnchoredPosition: {x: 960, y: -390.75}
   m_SizeDelta: {x: 443.9192, y: 83.2348}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2126263085
@@ -31305,7 +31297,7 @@ MonoBehaviour:
   startingScene: 1
   caveSpawn: {x: 245, y: 34, z: -230}
   outsideSpawn: {x: 260, y: 32, z: 19}
-  castleSpawn: {x: 85, y: 45, z: 0}
+  castleSpawn: {x: 84, y: 34, z: 0}
   outsideCastleDoor: {x: -350, y: 96, z: 110}
   textFade: {fileID: 470193608}
   speed: 10
@@ -32229,9 +32221,9 @@ MonoBehaviour:
   heavyAttack:
     anticipationEnd: 129
     slashEnd: 166
-    anticipationSpeed: 1.75
-    slashSpeed: 2.25
-    recoverySpeed: 1.2
+    anticipationSpeed: 2
+    slashSpeed: 2.5
+    recoverySpeed: 1.5
     dmg: 40
   longPressTime: 0.25
   maxLightCD: 0.35

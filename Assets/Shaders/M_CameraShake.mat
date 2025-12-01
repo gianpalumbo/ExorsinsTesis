@@ -38,7 +38,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _ShakePower: 2.1652112
+    - _ShakePower: 2.1638966
     - _Shaking: 0
     - _XOffset: 0
     - _YOffset: 0.5

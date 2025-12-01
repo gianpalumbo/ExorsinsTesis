@@ -12,6 +12,8 @@ using UnityEngine.VFX;
 [RequireComponent(typeof(BossLife))]
 public class Beelzebub : MonoBehaviour, ISlowable
 {
+
+    [SerializeField] Vector3 spawnPoint = new Vector3(-249, 64.5f, 0);
     public enum BInputs
     {
         THINKING,
@@ -121,6 +123,8 @@ public class Beelzebub : MonoBehaviour, ISlowable
     {
         //CHELO WAS HERE: AGREGO DEPENDENCIA DE SERVICE LOCATOR ISRESTING PARA APAGAR EL THINKING
         ServiceLocator.Instance.RegisterDependency<Beelzebub>(this);
+
+        transform.position = spawnPoint;
 
         bileShot = new bool[bileQuantity];
         bileTimes = new float[bileQuantity];
@@ -648,6 +652,12 @@ public class Beelzebub : MonoBehaviour, ISlowable
     #endregion
 
     #region VARIOUS METHODS
+    public void GoToThinkAndRestartLife()
+    {
+        Think();
+        _enemyLife.TakeHeal(_enemyLife.MaxLife - _enemyLife.Life);
+    }
+
     public float GetCurrentDmg() => _currentDmg;
     void ShootBile()
     {
