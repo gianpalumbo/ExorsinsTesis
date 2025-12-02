@@ -45,8 +45,8 @@ public class DeathManager : MonoBehaviour
         pmvc.enabled = true;
 
         Beelzebub gula = ServiceLocator.Instance.GetDependency<Beelzebub>();
-
-        gula.GoToThinkAndRestartLife();
+        if(gula != null)
+            gula.GoToThinkAndRestartLife();
         //gula.gameObject.GetComponent<BossLife>().HideLifeBar();
 
         //AGUS WAS HERE
