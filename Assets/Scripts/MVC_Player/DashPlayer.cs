@@ -64,7 +64,7 @@ public class DashPlayer : MonoBehaviour
         //    foreach (var d in _dashVfxs) d.SendEvent("OnPlay");
         //}
 
-        if (canDash)
+        if (canDash && !playerLife.isDead)
         {
             StartCoroutine(RollForward());
             _rollVfx.SendEvent("OnPlay");
@@ -128,6 +128,7 @@ public class DashPlayer : MonoBehaviour
 
         if (playerLife.Life <= 0)
         {
+            playerLife.isInvulnerable = false;
             playerLife.TakeDamageWithoutFlinching(0f);
         }
     }
